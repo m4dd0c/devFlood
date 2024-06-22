@@ -8,6 +8,7 @@ import { ThemeProvider } from "@/context/ThemeContext";
 
 export const metaData: Metadata = {
   title: "DevFlood",
+  icons: '/public/next.svg' ,
   description:
     "A platform for asking and answering programming questions. Get help, share knowledge, and collaborate with developers around the world. Explore topics in web development, mobile development, algorithms, data structure, and more.",
 };
