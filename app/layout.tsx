@@ -4,6 +4,7 @@ import React from "react";
 // eslint-disable-next-line
 import { Inter, Space_Grotesk } from "next/font/google";
 import type { Metadata } from "next";
+import { ThemeProvider } from "@/context/ThemeContext";
 
 export const metaData: Metadata = {
   title: "DevFlood",
@@ -27,12 +28,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <ClerkProvider>
-      <html lang="en">
-        <body className={`${spaceGrotesk.variable} ${inter.variable}`}>
-          {children}
-        </body>
-      </html>
-    </ClerkProvider>
+    <html lang="en">
+      <body className={`${spaceGrotesk.variable} ${inter.variable}`}>
+        <ClerkProvider>
+          <ThemeProvider>{children}</ThemeProvider>
+        </ClerkProvider>
+      </body>
+    </html>
   );
 }
