@@ -5,7 +5,7 @@ import React from "react";
 const GlobalSearch = () => {
   return (
     <div className="relative w-full max-w-[600px] max-lg:hidden">
-      <div className="backgroud-light800_darkgradient px-4 items-center flex relative rounded-xl gap-1 grow min-h-[56px]">
+      <div className="background-light800_darkgradient px-4 items-center flex relative rounded-xl gap-1 grow min-h-[56px]">
         <Image
           src={"/assets/icons/search.svg"}
           alt="search"

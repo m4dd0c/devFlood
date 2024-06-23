@@ -73,6 +73,7 @@ const MobileNav = () => {
           </p>
         </Link>
         <SheetClose asChild>
+          {/* link rendering w/ custom components */}
           <NavContent />
         </SheetClose>
         <SignedOut>
