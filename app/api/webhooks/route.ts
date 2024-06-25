@@ -8,7 +8,6 @@ export async function POST(req: Request) {
   try {
     // You can find this in the Clerk Dashboard -> Webhooks -> choose the
     const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
-    console.log("wbh+sec", WEBHOOK_SECRET);
     if (!WEBHOOK_SECRET) {
       throw new Error(
         "Please add WEBHOOK_SECRET from Clerk Dashboard to .env or .env.local"
@@ -21,7 +20,7 @@ export async function POST(req: Request) {
     const svix_timestamp = headerPayload.get("svix-timestamp");
     const svix_signature = headerPayload.get("svix-signature");
     console.log("\n");
-    console.log("headers", headers());
+    console.log("svix headers", { svix_id, svix_timestamp, svix_signature });
     console.log("\n");
     // If there are no headers, error out
     if (!svix_id || !svix_timestamp || !svix_signature) {
