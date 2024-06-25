@@ -5,9 +5,9 @@ import { NextResponse } from "next/server";
 import { createUser, deleteUser, updateUser } from "@/lib/actions/user.action";
 
 export async function POST(req: Request) {
-  // You can find this in the Clerk Dashboard -> Webhooks -> choose the endpoint
+  // You can find this in the Clerk Dashboard -> Webhooks -> choose the 
   const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
-
+  
   if (!WEBHOOK_SECRET) {
     throw new Error(
       "Please add WEBHOOK_SECRET from Clerk Dashboard to .env or .env.local"
@@ -50,13 +50,11 @@ export async function POST(req: Request) {
     });
   }
 
-  // Do something with the payload
-  // For this guide, you simply log the payload to the console
-  const { id } = evt.data;
   const eventType = evt.type;
 
   if (eventType === "user.created") {
     try {
+      console.log('user.created up')
       const userData = {
         clerkId: evt.data.id,
         email: evt.data.email_addresses[0].email_address,
@@ -64,7 +62,9 @@ export async function POST(req: Request) {
         name: `${evt.data.first_name} ${evt.data.last_name ? evt.data.last_name : ""}`,
         picture: evt.data.image_url,
       };
+      console.log('user.created mid')
       const user = await createUser(userData);
+      console.log('user.created down')
       return NextResponse.json({ message: "OK", user });
     } catch (error) {
       console.error("webhook.user.created:", error);
@@ -72,18 +72,21 @@ export async function POST(req: Request) {
   }
   if (eventType === "user.updated") {
     try {
+      console.log('user.updated.up')
       const updateData = {
         name: `${evt.data.first_name}${evt.data.last_name ? ` ${evt.data.last_name}` : ""}`,
         username: evt.data.username!,
         email: evt.data.email_addresses[0].email_address,
         picture: evt.data.image_url,
       };
-
+      console.log('user.updated.mid')
+      
       const user = await updateUser({
         clerkId: evt.data.id,
         path: `/profile/${evt.data.id}`,
         updateData,
       });
+      console.log('user.updated.down')
       return NextResponse.json({ message: "OK", user });
     } catch (error) {
       console.error("webhook.user.updated:", error);
@@ -91,7 +94,9 @@ export async function POST(req: Request) {
   }
   if (eventType === "user.deleted") {
     try {
+      console.log('user.deleted.up')
       const user = await deleteUser({ clerkId: evt.data.id! });
+      console.log('user.deleted.down')
       return NextResponse.json({ message: "OK", user });
     } catch (error) {
       console.error("webhook.user.deleted:", error);
