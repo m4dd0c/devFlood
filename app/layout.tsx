@@ -1,14 +1,13 @@
+/* eslint-disable */
 import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
 import React from "react";
-// eslint-disable-next-line
 import { Inter, Space_Grotesk } from "next/font/google";
 import type { Metadata } from "next";
 import { ThemeProvider } from "@/context/ThemeContext";
 
-export const metaData: Metadata = {
+export const metadata: Metadata = {
   title: "DevFlood",
-  icons: '/public/next.svg' ,
   description:
     "A platform for asking and answering programming questions. Get help, share knowledge, and collaborate with developers around the world. Explore topics in web development, mobile development, algorithms, data structure, and more.",
 };

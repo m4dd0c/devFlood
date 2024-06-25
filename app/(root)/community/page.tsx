@@ -1,9 +1,9 @@
-import UserCard from "@/components/cards/UserCard";
+// import UserCard from "@/components/cards/UserCard";
 import Filters from "@/components/shared/Filters";
 import LocalSearch from "@/components/shared/search/LocalSearch";
 import { UserFilters } from "@/constants/filter";
 import { getAllUsers } from "@/lib/actions/user.action";
-import Link from "next/link";
+// import Link from "next/link";
 import React from "react";
 
 export default async function Community() {
@@ -31,7 +31,7 @@ export default async function Community() {
         />
       </div>
       <section className="mt-12 gap-4 flex flex-wrap">
-        {result.users.length > 0 ? (
+        {/* {result.users.length > 0 ? (
           result.users.map((user) => <UserCard key={user._id.toString()} user={user}/>)
         ) : (
           <div className="paragraph-regular mx-auto text-dark200_light800 text-center max-w-4xl">
@@ -40,7 +40,7 @@ export default async function Community() {
               Join to be the first!
             </Link>
           </div>
-        )}
+        )} */}
       </section>
     </>
   );

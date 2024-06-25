@@ -10,3 +10,4 @@
 # Remains
 
 1. add fix types
+2. FIX HYDRATION AND LINKING IN COMMUNITY USERCARD
