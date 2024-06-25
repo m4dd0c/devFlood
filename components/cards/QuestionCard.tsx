@@ -1,4 +1,4 @@
-import { Link } from "lucide-react";
+import Link from "next/link";
 import React from "react";
 import RenderTag from "../shared/RenderTag";
 import Metric from "../shared/Metric";
@@ -40,7 +40,7 @@ const QuestionCard = ({
             {getTimestamp(createdAt)}
           </span>
           <Link href={`/question/${_id}`}>
-            <h3 className="sm:h3-semibold base-semibold line-clamp-1 flex-1 text-dark200_light900">
+            <h3 className="sm:h3-semibold base-semibold text-dark200_light900 line-clamp-1 flex-1">
               {title}
             </h3>
           </Link>
@@ -54,9 +54,9 @@ const QuestionCard = ({
       </div>
       <div className="flex-between flex-wrap w-full gap-3 mt-6">
         <Metric
-          imageUrl="/assets/icons/avatar.svg"
+          imageUrl="/assets/icons/user.svg"
           alt="user"
-          title=" - asked 1 hour ago"
+          title={` - asked ${getTimestamp(createdAt)}`}
           href={`/profile/${author._id}`}
           value={author.name}
           textStyles="body-medium text-dark400_light700"

@@ -13,7 +13,7 @@ const GlobalSearch = () => {
           height={24}
           className="cursor-pointer"
         />
-        <Input type='text' placeholder='Search anything globally' value="" className="shadow-none outline-none no-focus paragraph-regular border-none background-light800_darkgradient" />
+        <Input type='text' placeholder='Search anything globally' className="shadow-none outline-none no-focus paragraph-regular border-none background-light800_darkgradient" />
       </div> 
     </div>
   );

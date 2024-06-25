@@ -9,8 +9,8 @@ import {
 } from "@/components/ui/select";
 
 interface IFilters {
-  otherClasses: string;
-  containerClasses: string;
+  otherClasses?: string;
+  containerClasses?: string;
   filter: {
     name: string;
     value: string;

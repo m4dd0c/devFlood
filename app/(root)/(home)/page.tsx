@@ -5,71 +5,18 @@ import NoResult from "@/components/shared/NoResult";
 import LocalSearch from "@/components/shared/search/LocalSearch";
 import { Button } from "@/components/ui/button";
 import { HomePageFilters } from "@/constants/filter";
+import { getQuestions } from "@/lib/actions/question.action";
 import Link from "next/link";
 import React from "react";
 
-const questions = [
-  {
-    _id: "1",
-    title: "Cascading with Javascript in webpage?",
-    tags: [
-      { _id: "1", name: "python" },
-      { _id: "2", name: "javascript" },
-      { _id: "3", name: "html" },
-      { _id: "4", name: "css" },
-    ],
-    author: {
-      _id: "1",
-      name: "John Doe",
-      picture: "john-doe.png",
-    },
-    views: 232,
-    answers: [],
-    upvotes: 23,
-    createdAt: new Date("2020-02-03T12:00:00.000Z"),
-  },
-  {
-    _id: "2",
-    title: "Redux toolkit not working as expected?",
-    tags: [
-      { _id: "1", name: "react" },
-      { _id: "2", name: "javascript" },
-      { _id: "3", name: "jsx" },
-      { _id: "4", name: "css" },
-    ],
-    author: {
-      _id: "2",
-      name: "Jane Doe",
-      picture: "jane-doe.png",
-    },
-    views: 23,
-    answers: [],
-    upvotes: 3,
-    createdAt: new Date("2020-07-03T12:00:00.000Z"),
-  },
-  {
-    _id: "3",
-    title:
-      "Reactjs vs Nextjs, which one I should use for my upcoming project and why?",
-    tags: [
-      { _id: "1", name: "reactjs" },
-      { _id: "2", name: "javascript" },
-      { _id: "3", name: "nextjs" },
-      { _id: "4", name: "tailwindcss" },
-    ],
-    author: {
-      _id: "3",
-      name: "Anibal Cortest",
-      picture: "anibal-cortest.png",
-    },
-    views: 1122,
-    answers: [],
-    upvotes: 613,
-    createdAt: new Date("2021-02-03T12:00:00.000Z"),
-  },
-];
 
-export default function Home() {
+export default async function Home() {
+  const result = await getQuestions({
+    filter: undefined,
+    page: undefined,
+    pageSize: undefined,
+    searchQuery: undefined,
+  });
   return (
     <>
       <div className="flex w-full flex-col-reverse justify-between gap-4 sm:flex-row  sm:items-center">
@@ -96,9 +43,9 @@ export default function Home() {
       </div>
       <HomeFilters />
       <div className="mt-10 flex w-full flex-col gap-6">
-        {questions.length > 0 ? (
+        {result.questions.length > 0 ? (
           // todo:
-          questions.map((question) => (
+          result.questions.map((question) => (
             <QuestionCard
               key={question._id}
               _id={question._id}

@@ -34,13 +34,6 @@ const Theme = () => {
               width={20}
             />
           )}
-          {/* <Image
-            src={"/assets/icons/sun.svg"}
-            alt="sun"
-            className="active-theme"
-            height={20}
-            width={20}
-          /> */}
         </MenubarTrigger>
         <MenubarContent className="absolute right-[-3rem] mt-3 min-w-[120px] rounded border py-2 dark:border-dark-400 dark:bg-dark-300">
           {themes.map((item) => (
