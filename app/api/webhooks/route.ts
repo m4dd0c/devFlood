@@ -19,7 +19,6 @@ export async function POST(req: Request) {
     const svix_id = headerPayload.get("svix-id");
     const svix_timestamp = headerPayload.get("svix-timestamp");
     const svix_signature = headerPayload.get("svix-signature");
-    console.log("\n");
     console.log("svix headers", { svix_id, svix_timestamp, svix_signature });
     console.log("\n");
     // If there are no headers, error out
