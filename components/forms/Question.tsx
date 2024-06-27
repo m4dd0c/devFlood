@@ -135,7 +135,7 @@ const Question = ({ userId }: { userId: string }) => {
               </FormLabel>
               <FormControl className="mt-3.5">
                 <Editor
-                  apiKey={process.env.NEXT_PUBLIC_TINY_EDITOR_API_KEY}
+                  apiKey={process.env.NEXT_PUBLIC_TINY_EDITOR_API_SECRET}
                   onInit={(_evt, editor) => {
                     //@ts-ignore
                     editorRef.current = editor;

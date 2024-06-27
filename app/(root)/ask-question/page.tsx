@@ -1,16 +1,14 @@
 import Question from "@/components/forms/Question";
 import { getUserById } from "@/lib/actions/user.action";
-// import { auth } from "@clerk/nextjs/server";
+import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import React from "react";
 
 const page = async () => {
-  const userId = "123456789";
-  // const {userId} = auth();
+  const {userId} = auth();
   if (!userId) return redirect("/sign-in");
-  // make api call
   const user = await getUserById(userId);
-  if(!user) return redirect('/sign-in');
+  if (!user) return redirect("/sign-in");
   return (
     <div>
       <div>

@@ -56,7 +56,7 @@ const LeftSidebar = () => {
             </Button>
           </Link>
           <Link href={"/sign-up"}>
-            <Button className="small-medium w-full  text-dark400_light900 rounded-lg shadow-none btn-tertiary light-border-2 px-4 py-3 min-h-[41px]">
+            <Button className="small-medium w-full text-dark400_light900 rounded-lg shadow-none btn-tertiary light-border-2 px-4 py-3 min-h-[41px]">
               <Image
                 src={"/assets/icons/sign-up.svg"}
                 alt="sign-up"
@@ -64,7 +64,7 @@ const LeftSidebar = () => {
                 height={20}
                 className="lg:hidden invert-colors"
               />
-              <span className="max-lg:hidden">Sign Up</span>
+              <span className="max-lg:hidden">Sign up</span>
             </Button>
           </Link>
         </div>

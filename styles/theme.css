@@ -96,11 +96,11 @@
   }
 
   .light-border {
-    @apply border-light-800 dark:border-dark-300;
+    @apply border-light-900 dark:border-dark-300 !important;
   }
 
   .light-border-2 {
-    @apply border-light-700 dark:border-dark-400 !important;
+    @apply border-light-700 dark:border-dark-500 !important;
   }
 
   .h1-bold {

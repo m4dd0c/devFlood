@@ -19,7 +19,7 @@ const LocalSearch = ({
 }: ILocalSearch) => {
   return (
     <div
-      className={`bg-light800_darkgradient flex min-h-[56px] grow items-center px-4 rounded-[10px] ${otherClasses}`}
+      className={`bg-light800_darkgradient flex min-h-[56px] grow items-center px-4 rounded-[10px] ${otherClasses} gap-4`}
     >
       {iconPosition === "left" && (
         <Image
@@ -37,15 +37,15 @@ const LocalSearch = ({
         onChange={() => {}}
         className="paragraph-regular no-focus placeholder background-light800_darkgradient border-none shadow-none outline-none"
       />
-  {iconPosition === "right" && (
-    <Image
-      src={imgSrc}
-      alt="Search Icon"
-      height={24}
-      width={24}
-      className="cursor-pointer"
-    /> 
-  )}
+      {iconPosition === "right" && (
+        <Image
+          src={imgSrc}
+          alt="Search Icon"
+          height={24}
+          width={24}
+          className="cursor-pointer"
+        />
+      )}
     </div>
   );
 };

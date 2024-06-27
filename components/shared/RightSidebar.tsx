@@ -38,7 +38,7 @@ const RightSidebar = () => {
             <Link
               key={question._id}
               href={`/questions/${question._id}`}
-              className="flex cursor-pointer items-center justify-center gap-7"
+              className="flex cursor-pointer items-center justify-between gap-7"
             >
               <p className="body-medium text-dark500_light700">
                 {question.title}
