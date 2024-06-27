@@ -14,6 +14,5 @@ export const connectDB = async () => {
     console.log("connect to db successful");
   } catch (error: any) {
     console.log("DB_CONN_ERR:", error.message);
-    throw new Error(error.message);
   }
 };
