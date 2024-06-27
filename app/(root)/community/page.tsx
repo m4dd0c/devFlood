@@ -7,12 +7,12 @@ import { getAllUsers } from "@/lib/actions/user.action";
 import React from "react";
 
 export default async function Community() {
-  const result = await getAllUsers({
-    filter: undefined,
-    page: undefined,
-    pageSize: undefined,
-    searchQuery: undefined,
-  });
+  // const result = await getAllUsers({
+  //   filter: undefined,
+  //   page: undefined,
+  //   pageSize: undefined,
+  //   searchQuery: undefined,
+  // });
 
   return (
     <>
