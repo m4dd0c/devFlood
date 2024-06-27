@@ -5,7 +5,7 @@ import React from "react";
 import { Inter, Space_Grotesk } from "next/font/google";
 import type { Metadata } from "next";
 
-export const metaData: Metadata = {
+export const metadata: Metadata = {
   title: "DevFlood",
   description:
     "A platform for asking and answering programming questions. Get help, share knowledge, and collaborate with developers around the world. Explore topics in web development, mobile development, algorithms, data structure, and more.",
