@@ -48,7 +48,7 @@ export default async function Home() {
           result.questions.map((question) => (
             <QuestionCard
               key={question._id}
-              _id={question._id}
+              _id={JSON.stringify(question._id)}
               answers={question.answers}
               author={question.author}
               createdAt={question.createdAt}

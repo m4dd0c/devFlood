@@ -5,6 +5,7 @@ import React from "react";
 import { Inter, Space_Grotesk } from "next/font/google";
 import type { Metadata } from "next";
 import { ThemeProvider } from "@/context/ThemeContext";
+import "../styles/prism.css";
 
 export const metadata: Metadata = {
   title: "DevFlood",

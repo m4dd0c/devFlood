@@ -39,7 +39,7 @@ const QuestionCard = ({
           <span className="subtle-regular text-dark400_light700 flex line-clamp-1 sm:hidden">
             {getTimestamp(createdAt)}
           </span>
-          <Link href={`/question/${_id}`}>
+          <Link href={`/question/${JSON.parse(_id)}`}>
             <h3 className="sm:h3-semibold base-semibold text-dark200_light900 line-clamp-1 flex-1">
               {title}
             </h3>
@@ -49,7 +49,11 @@ const QuestionCard = ({
       </div>
       <div className="flex flex-wrap mt-3.5 gap-2">
         {tags.map((tag) => (
-          <RenderTag _id={tag._id} name={tag.name} key={tag._id} />
+          <RenderTag
+            _id={JSON.stringify(tag._id)}
+            name={tag.name}
+            key={tag._id}
+          />
         ))}
       </div>
       <div className="flex-between flex-wrap w-full gap-3 mt-6">
@@ -57,7 +61,7 @@ const QuestionCard = ({
           imageUrl="/assets/icons/user.svg"
           alt="user"
           title={` - asked ${getTimestamp(createdAt)}`}
-          href={`/profile/${author._id}`}
+          href={`/profile/${JSON.stringify(author._id)}`}
           value={author.name}
           textStyles="body-medium text-dark400_light700"
         />

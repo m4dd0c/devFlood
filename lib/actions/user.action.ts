@@ -5,13 +5,14 @@ import {
   CreateUserParams,
   DeleteUserParams,
   GetAllUsersParams,
+  GetUserByIdParams,
   UpdateUserParams,
 } from "./shared.types";
 // import { FilterQuery } from "mongoose";
 import { revalidatePath } from "next/cache";
 import Question from "@/database/question.model";
 
-export const getUserById = async (userId: string) => {
+export const getUserById = async ({userId}: GetUserByIdParams) => {
   try {
     await connectDB();
     const user = await User.findOne({ clerkId: userId });

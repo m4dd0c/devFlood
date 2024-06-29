@@ -33,7 +33,7 @@ export default async function Community() {
       <section className="mt-12 gap-4 flex flex-wrap">
         {result.users.length > 0 ? (
           result.users.map((user) => (
-            <UserCard key={user._id.toString()} user={user} />
+            <UserCard key={user._id} user={user} />
           ))
         ) : (
           <div className="paragraph-regular mx-auto text-dark200_light800 text-center max-w-4xl">

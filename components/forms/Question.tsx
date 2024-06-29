@@ -20,10 +20,12 @@ import Image from "next/image";
 import { Badge } from "../ui/badge";
 import { createQuestion } from "@/lib/actions/question.action";
 import { usePathname, useRouter } from "next/navigation";
+import { useTheme } from "@/context/ThemeContext";
 //TODO:
 const type: "edit" | "create" = "create";
 
 const Question = ({ userId }: { userId: string }) => {
+  const { mode } = useTheme();
   const router = useRouter();
   const pathname = usePathname();
   const [isPending, setIsPending] = useState(false);
@@ -64,7 +66,7 @@ const Question = ({ userId }: { userId: string }) => {
 
   const handleKeyDown = (
     e: React.KeyboardEvent<HTMLInputElement>,
-    field: any
+    field: any,
   ) => {
     if (e.key === "Enter" && field.name === "tags") {
       e.preventDefault();
@@ -168,6 +170,8 @@ const Question = ({ userId }: { userId: string }) => {
                       "codesample | bold italic forecolor | alignleft aligncenter | " +
                       "alignright alignjustify | bullist numlist ",
                     content_style: "body { font-family:Inter; font-size:16px }",
+                    skin: mode === "dark" ? "oxide-dark" : "oxide",
+                    content_css: mode === "dark" ? "dark" : "light",
                   }}
                 />
               </FormControl>
