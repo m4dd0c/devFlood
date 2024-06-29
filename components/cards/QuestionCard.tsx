@@ -18,8 +18,8 @@ interface IQuestionCard {
   };
   createdAt: Date;
   views: number;
-  answers: Array<object>;
-  upvotes: number;
+  answers: object[];
+  upvotes: string[];
 }
 
 const QuestionCard = ({
@@ -58,10 +58,10 @@ const QuestionCard = ({
       </div>
       <div className="flex-between flex-wrap w-full gap-3 mt-6">
         <Metric
-          imageUrl="/assets/icons/user.svg"
+          imageUrl={author.picture}
           alt="user"
-          title={` - asked ${getTimestamp(createdAt)}`}
-          href={`/profile/${JSON.stringify(author._id)}`}
+          title={` asked ${getTimestamp(createdAt)}`}
+          href={`/profile/author._id}`}
           value={author.name}
           textStyles="body-medium text-dark400_light700"
         />
@@ -71,7 +71,7 @@ const QuestionCard = ({
           imageUrl="/assets/icons/like.svg"
           textStyles="small-medium text-dark400_light700"
           title="Votes"
-          value={formatAndDivideNumber(upvotes)}
+          value={formatAndDivideNumber(upvotes.length)}
         />
         <Metric
           alt="message"

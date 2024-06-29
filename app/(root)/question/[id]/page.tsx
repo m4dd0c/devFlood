@@ -22,10 +22,10 @@ const page = async ({
   const { userId } = auth();
   let user;
   if (userId) user = await getUserById({ userId });
-  if (!userId) return;
+  if (!userId) return null;
   return (
     <>
-      <div>
+      <div className="flex-start w-full flex-col">
         <div className="flex w-full flex-col-reverse justify-between gap-5 sm:flex-row sm:items-center sm:gap-2">
           <Link
             href={`/profile/${result.author.clerkId}`}
@@ -58,30 +58,30 @@ const page = async ({
         <h2 className="h2-semibold text-dark200_light900 mt-3.5 w-full text-left">
           {result.title}
         </h2>
-        <div className="mb-8 mt-5 flex flex-wrap gap-4">
-          <Metric
-            imageUrl="/assets/icons/clock.svg"
-            alt="clock icon"
-            value={getTimestamp(result.createdAt)}
-            title=" Asked"
-            textStyles="body-medium text-dark400_light800"
-          />
+      </div>
+      <div className="mb-8 mt-5 flex flex-wrap gap-4">
+        <Metric
+          imageUrl="/assets/icons/clock.svg"
+          alt="clock icon"
+          value={getTimestamp(result.createdAt)}
+          title=" Asked"
+          textStyles="body-medium text-dark400_light800"
+        />
 
-          <Metric
-            alt="message"
-            imageUrl="/assets/icons/message.svg"
-            textStyles="small-medium text-dark400_light800"
-            title=" Answers"
-            value={formatAndDivideNumber(result.answers.length)}
-          />
-          <Metric
-            alt="eye"
-            imageUrl="/assets/icons/eye.svg"
-            textStyles="small-medium text-dark400_light800"
-            title=" Views"
-            value={formatAndDivideNumber(result.views)}
-          />
-        </div>
+        <Metric
+          alt="message"
+          imageUrl="/assets/icons/message.svg"
+          textStyles="small-medium text-dark400_light800"
+          title=" Answers"
+          value={formatAndDivideNumber(result.answers.length)}
+        />
+        <Metric
+          alt="eye"
+          imageUrl="/assets/icons/eye.svg"
+          textStyles="small-medium text-dark400_light800"
+          title=" Views"
+          value={formatAndDivideNumber(result.views)}
+        />
       </div>
       <ParseHTML data={result.content} />
 

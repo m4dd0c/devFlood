@@ -3,10 +3,6 @@
 1. Theme.tsx (onClick function)
 2. ThemeContext.tsx (handleChangeMode function)
 
-# Skipped;
-
-1. Webhook (clerk)
-
 # Remains
 
 1. add fix types
@@ -21,7 +17,7 @@ createdAt: NativeDate;
 chats: ObjectId[];
 connections: ObjectId[];
 projects: ObjectId[];
-\_id: ObjectId;
+_id: ObjectId;
 username: string;
 full_name: string;
 email: string;

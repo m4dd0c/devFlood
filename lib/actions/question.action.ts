@@ -9,8 +9,10 @@ import {
   GetQuestionByIdParams,
   QuestionVoteParams,
   ToggleSaveQuestionParams,
+  GetQuestionsByTagIdParams,
 } from "./shared.types";
 import User from "@/database/user.model";
+import { FilterQuery } from "mongoose";
 // import { FilterQuery } from "mongoose";
 
 export const getQuestions = async ({
@@ -160,6 +162,7 @@ export const downvoteQuestion = async ({
     throw error;
   }
 };
+
 export const upvoteQuestion = async ({
   hasDownvoted,
   hasUpvoted,
