@@ -9,10 +9,12 @@ import {
   GetQuestionByIdParams,
   QuestionVoteParams,
   ToggleSaveQuestionParams,
-  GetQuestionsByTagIdParams,
+  DeleteQuestionParams,
+  EditQuestionParams,
 } from "./shared.types";
 import User from "@/database/user.model";
-import { FilterQuery } from "mongoose";
+import Answer from "@/database/answer.model";
+import Interaction from "@/database/interaction.model";
 // import { FilterQuery } from "mongoose";
 
 export const getQuestions = async ({
@@ -212,6 +214,45 @@ export const toggleSaveQuestion = async ({
       updateQuery = { $addToSet: { saved: questionId } };
     }
     await User.updateOne({ _id: userId }, updateQuery, { new: true });
+    revalidatePath(path);
+  } catch (error: any) {
+    console.log(error?.message);
+    throw error;
+  }
+};
+export const deleteQuestion = async ({
+  path,
+  questionId,
+}: DeleteQuestionParams) => {
+  try {
+    await connectDB();
+    await Question.deleteOne({ _id: questionId });
+    await Answer.deleteMany({ question: questionId });
+    await Interaction.deleteMany({ question: questionId });
+    await Tag.updateMany(
+      { question: questionId },
+      { $pull: { questions: questionId } }
+    );
+    revalidatePath(path);
+  } catch (error: any) {
+    console.log(error?.message);
+    throw error;
+  }
+};
+
+export const editQuestion = async ({
+  path,
+  questionId,
+  content,
+  title,
+}: EditQuestionParams) => {
+  try {
+    await connectDB();
+    const question = await Question.findById(questionId);
+    if (!question) throw new Error("Question not found!");
+    question.title = title;
+    question.content = content;
+    await question.save();
     revalidatePath(path);
   } catch (error: any) {
     console.log(error?.message);

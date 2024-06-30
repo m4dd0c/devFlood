@@ -5,10 +5,11 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
 import { Button } from "../ui/button";
-import { SignedOut } from "@clerk/nextjs";
+import { SignedOut, useAuth } from "@clerk/nextjs";
 
 const LeftSidebar = () => {
   const pathname = usePathname();
+  const { userId } = useAuth();
   return (
     <section className="background-light900_dark200 light-border left-0 top-0 sticky h-screen border-r flex flex-col justify-between overflow-y-auto p-6 pt-36 shadow-light-300 max-sm:hidden dark:shadow-none lg:w-[266px] custom-scrollbar">
       <div className="flex-col flex-1 gap-6 h-full flex">
@@ -17,6 +18,13 @@ const LeftSidebar = () => {
             (pathname.includes(item.route) && item.route.length > 1) ||
             pathname === item.route;
           //TODO: setup profile navigation w/ id
+          if (item.route === "/profile") {
+            if (userId) {
+              item.route = `${item.route}/${userId}`;
+            } else {
+              return null;
+            }
+          }
           return (
             <Link
               key={item.route}

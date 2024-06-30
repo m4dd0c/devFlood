@@ -5,9 +5,10 @@
 
 # Remains
 
-1. add fix types
-2. FIX HYDRATION AND LINKING IN COMMUNITY USERCARD
+1. FIX>>> types
+2. FIX>>> HYDRATION AND LINKING IN COMMUNITY USERCARD
 3. FIX>>> jsonparse jsonstrigify in voting
+4. FIX>>> getJoinedDate(date) in profile page
 
 # user type copied from other project for analysing
 
@@ -17,7 +18,7 @@ createdAt: NativeDate;
 chats: ObjectId[];
 connections: ObjectId[];
 projects: ObjectId[];
-_id: ObjectId;
+\_id: ObjectId;
 username: string;
 full_name: string;
 email: string;

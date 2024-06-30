@@ -2,11 +2,13 @@
 import Answer from "@/database/answer.model";
 import Question from "@/database/question.model";
 import User from "@/database/user.model";
+import Interaction from "@/database/interaction.model";
 import { connectDB } from "../mongoose";
 import { revalidatePath } from "next/cache";
 import {
   AnswerVoteParams,
   CreateAnswerParams,
+  DeleteAnswerParams,
   GetAnswersParams,
 } from "./shared.types";
 
@@ -136,6 +138,26 @@ export const upvoteAnswer = async ({
     revalidatePath(path);
   } catch (error: any) {
     console.error(error?.message);
+    throw error;
+  }
+};
+export const deleteAnswer = async ({ path, answerId }: DeleteAnswerParams) => {
+  try {
+    await connectDB();
+
+    const answer = await Answer.findById(answerId);
+    if (!answer) throw new Error("Answer not found!");
+
+    await answer.deleteOne({ _id: answerId });
+    await Interaction.deleteMany({ answer: answerId });
+    await Question.updateMany(
+      { _id: answer.question },
+      { $pull: { answers: answerId } }
+    );
+
+    revalidatePath(path);
+  } catch (error: any) {
+    console.log(error?.message);
     throw error;
   }
 };

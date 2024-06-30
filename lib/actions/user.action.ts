@@ -7,6 +7,7 @@ import {
   GetAllUsersParams,
   GetSavedQuestionsParams,
   GetUserByIdParams,
+  GetUserStatsParams,
   UpdateUserParams,
 } from "./shared.types";
 // import { FilterQuery } from "mongoose";
@@ -14,6 +15,7 @@ import { revalidatePath } from "next/cache";
 import Question from "@/database/question.model";
 import Tag from "@/database/tag.model";
 import { FilterQuery } from "mongoose";
+import Answer from "@/database/answer.model";
 
 export const getUserById = async ({ userId }: GetUserByIdParams) => {
   try {
@@ -175,6 +177,72 @@ export const getSavedQuestions = async ({
     return { isNext, savedQuestions };
   } catch (error: any) {
     console.error(error?.message);
+    throw error;
+  }
+};
+
+export const getUserInfo = async ({ userId }: GetUserByIdParams) => {
+  try {
+    await connectDB();
+
+    const user = await User.findOne({ clerkId: userId });
+    if (!user) throw new Error("user unauthorized");
+    const totalQuestions = await Question.countDocuments({ author: user._id });
+    const totalAnswers = await Answer.countDocuments({ author: user._id });
+    return { user, totalQuestions, totalAnswers };
+  } catch (error: any) {
+    console.error(error.message);
+    throw error;
+  }
+};
+
+export const getUserQuestions = async ({
+  userId,
+  page = 1,
+  pageSize = 10,
+}: GetUserStatsParams) => {
+  try {
+    await connectDB();
+    const skipAmount = (page - 1) * pageSize;
+
+    const totalQuestions = await Question.countDocuments({ author: userId });
+    const questions = await Question.find({ author: userId })
+      .sort({ view: -1, upvotes: -1 })
+      .limit(pageSize)
+      .skip(skipAmount)
+      .populate("tags", "_id name")
+      .populate("author", "_id clerkId name picture");
+
+    const isNext = totalQuestions > skipAmount + questions.length;
+
+    return { questions, totalQuestions, isNext };
+  } catch (error: any) {
+    console.error(error.message);
+    throw error;
+  }
+};
+export const getUserAnswers = async ({
+  userId,
+  page = 1,
+  pageSize = 10,
+}: GetUserStatsParams) => {
+  try {
+    await connectDB();
+    const skipAmount = (page - 1) * pageSize;
+
+    const totalAnswers = await Answer.countDocuments({ author: userId });
+    const answers = await Answer.find({ author: userId })
+      .sort({ upvotes: -1 })
+      .limit(pageSize)
+      .skip(skipAmount)
+      .populate("question", "_id title")
+      .populate("author", "_id clerkId name picture");
+
+    const isNext = totalAnswers > skipAmount + answers.length;
+
+    return { answers, totalAnswers, isNext };
+  } catch (error: any) {
+    console.error(error.message);
     throw error;
   }
 };

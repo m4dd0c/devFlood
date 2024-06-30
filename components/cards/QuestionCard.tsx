@@ -3,6 +3,8 @@ import React from "react";
 import RenderTag from "../shared/RenderTag";
 import Metric from "../shared/Metric";
 import { formatAndDivideNumber, getTimestamp } from "@/lib/utils";
+import { SignedIn } from "@clerk/nextjs";
+import EditDeleteAction from "../shared/EditDeleteAction";
 
 interface IQuestionCard {
   _id: string;
@@ -13,6 +15,7 @@ interface IQuestionCard {
   }[];
   author: {
     _id: string;
+    clerkId: string;
     name: string;
     picture: string;
   };
@@ -20,6 +23,7 @@ interface IQuestionCard {
   views: number;
   answers: object[];
   upvotes: string[];
+  clerkId?: string | null;
 }
 
 const QuestionCard = ({
@@ -31,7 +35,9 @@ const QuestionCard = ({
   title,
   upvotes,
   views,
+  clerkId,
 }: IQuestionCard) => {
+  const showActionButtons = clerkId && clerkId === author.clerkId;
   return (
     <div className="card-wrapper p-9 sm:px-11 rounded-[10px]">
       <div className="flex flex-col-reverse items-start justify-between gap-5 sm:flex-row">
@@ -45,7 +51,11 @@ const QuestionCard = ({
             </h3>
           </Link>
         </div>
-        {/*todo: if signed in show delete edit btn */}
+        <SignedIn>
+          {showActionButtons && (
+            <EditDeleteAction type="Question" itemId={JSON.parse(_id)} />
+          )}
+        </SignedIn>
       </div>
       <div className="flex flex-wrap mt-3.5 gap-2">
         {tags.map((tag) => (
