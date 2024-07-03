@@ -37,7 +37,7 @@ const RightSidebar = () => {
           {hotQuestions.map((question) => (
             <Link
               key={question._id}
-              href={`/questions/${JSON.parse(question._id)}`}
+              href={`/questions/${question._id}`}
               className="flex cursor-pointer items-center justify-between gap-7"
             >
               <p className="body-medium text-dark500_light700">
@@ -60,7 +60,7 @@ const RightSidebar = () => {
           {popularTags.map((tag) => (
             <RenderTag
               key={tag._id}
-              _id={JSON.stringify(tag._id)}
+              _id={tag._id}
               name={tag.name}
               totalQuestions={tag.totalQuestions}
               showCount

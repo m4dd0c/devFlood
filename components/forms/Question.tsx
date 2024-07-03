@@ -34,8 +34,10 @@ const Question = ({ userId, type = "Create", questionDetails }: IQuestion) => {
   const pathname = usePathname();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const question = JSON.parse(questionDetails || "");
-  const initTags = question.tags.map((tag: any) => tag.name);
+  const question = questionDetails ? JSON.parse(questionDetails) : {};
+  const initTags = questionDetails
+    ? question.tags.map((tag: any) => tag.name)
+    : [];
 
   const editorRef = useRef<null | Editor>(null);
   const form = useForm<z.infer<typeof QuestionSchema>>({
@@ -43,7 +45,7 @@ const Question = ({ userId, type = "Create", questionDetails }: IQuestion) => {
     defaultValues: {
       title: question.title || "",
       explanation: question.content || "",
-      tags: initTags || [],
+      tags: initTags,
     },
   });
 
@@ -83,7 +85,7 @@ const Question = ({ userId, type = "Create", questionDetails }: IQuestion) => {
 
   const handleKeyDown = (
     e: React.KeyboardEvent<HTMLInputElement>,
-    field: any
+    field: any,
   ) => {
     if (e.key === "Enter" && field.name === "tags") {
       e.preventDefault();

@@ -3,6 +3,10 @@
 1. Theme.tsx (onClick function)
 2. ThemeContext.tsx (handleChangeMode function)
 
+# Rememebers
+
+1. question.action.ts (todo with question)
+
 # Remains
 
 1. FIX>>> types

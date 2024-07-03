@@ -11,6 +11,7 @@ import AllAnswers from "@/components/shared/AllAnswers";
 import { getUserById } from "@/lib/actions/user.action";
 import { auth } from "@clerk/nextjs/server";
 import Votes from "@/components/shared/Votes";
+
 const page = async ({
   params,
   searchParams,
@@ -18,11 +19,15 @@ const page = async ({
   params: { id: string };
   searchParams: { pageSize?: string; page?: string; filter?: string };
 }) => {
-  const result = await getQuestionById({ questionId: params.id });
   const { userId } = auth();
-  let user;
-  if (userId) user = await getUserById({ userId });
   if (!userId) return null;
+
+  const user = await getUserById({ userId });
+  if (!user) return null;
+
+  const result = await getQuestionById({ questionId: params.id });
+  if (!result) return null;
+
   return (
     <>
       <div className="flex-start w-full flex-col">
@@ -96,14 +101,14 @@ const page = async ({
         ))}
       </div>
       <AllAnswers
-        questionId={result._id}
+        questionId={params.id}
         totalAnswers={result.answers.length}
-        userId={user?._id}
+        userId={JSON.stringify(user._id)}
       />
       <Answer
         question={result.content}
-        authorId={user?._id}
-        questionId={result._id}
+        authorId={JSON.stringify(user._id)}
+        questionId={JSON.stringify(result._id)}
       />
     </>
   );

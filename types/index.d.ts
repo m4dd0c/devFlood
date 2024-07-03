@@ -1,9 +1,110 @@
 import { BADGE_CRITERIA } from "@/constants";
+import { ObjectId } from "mongoose";
 
 export interface SidebarLink {
   imgURL: string;
   route: string;
   label: string;
+}
+
+export interface IAnswer extends Document {
+  author: Schema.Types.ObjectId;
+  question: Schema.Types.ObjectId;
+  content: string;
+  upvotes: Schema.Types.ObjectId[];
+  downvotes: Schema.Types.ObjectId[];
+  createdAt: NativeDate;
+  updatedAt: NativeDate;
+}
+
+export interface ITag extends Document {
+  name: string;
+  description: string;
+  questions: Schema.Types.ObjectId[];
+  createdOn: Date;
+  followers: Schema.Types.ObjectId[];
+}
+
+export interface IQuestion extends Document {
+  title: string;
+  content: string;
+  tags: Schema.Types.ObjectId[];
+  views: number;
+  upvotes: Schema.Types.ObjectId[];
+  downvotes: Schema.Types.ObjectId[];
+  answers: Schema.Types.ObjectId[];
+  author: Schema.Types.ObjectId;
+  createdAt: NativeDate;
+  updatedAt: NativeDate;
+}
+export interface IInteraction extends Document {
+  action: string;
+  user: Schema.Types.ObjectId;
+  tags: Schema.Types.ObjectId[];
+  answer: Schema.Types.ObjectId;
+  question: Schema.Types.ObjectId;
+  createdAt: NativeDate;
+  updatedAt: NativeDate;
+}
+export interface IUser extends Document {
+  _id: ObjectId;
+  clerkId: string;
+  name: string;
+  username: string;
+  email: string;
+  bio?: string;
+  picture: string;
+  location?: string;
+  reputation?: number;
+  portfolioWebsite?: string;
+  saved: ObjectId[];
+  createdAt: NativeDate;
+  updatedAt: NativeDate;
+}
+export interface ISavedQuestion extends Omit<IQuestion, "author" | "tags"> {
+  _id: ObjectId;
+  author: IAuthor;
+  tags: ITagSnippet[];
+}
+export interface ISaved extends Omit<IUser, "saved"> {
+  saved: ISavedQuestion[];
+}
+
+export interface IQuestionWithAuthorTag
+  extends Omit<IQuestion, "author" | "tags"> {
+  _id: ObjectId;
+  author: IAuthor;
+  tags: ITagSnippet[];
+}
+
+export interface ITagQuestions extends Omit<ITag, "questions"> {
+  questions: IQuestionWithAuthorTag[];
+}
+export interface IGetUserAnswers extends Omit<IAnswer, "author" | "question"> {
+  author: IAuthor;
+  question: IQuestionSnippet;
+}
+interface IQuestionSnippet {
+  _id: ObjectId;
+  title: string;
+}
+export interface IAnswerWithAuthor extends Omit<IAnswer, "author"> {
+  author: IAuthor;
+}
+export interface IAuthor {
+  _id: ObjectId;
+  clerkId: string;
+  name: string;
+  picture: string;
+}
+export interface IGetQuestions extends Omit<IQuestion, "tags" | "author"> {
+  _id: ObjectId;
+  tags: ITag[];
+  author: IUser;
+}
+export interface ITagSnippet {
+  _id: ObjectId;
+  name: string;
 }
 
 export interface Job {

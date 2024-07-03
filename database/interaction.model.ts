@@ -1,15 +1,7 @@
 import { Schema, model, Model, models, Document } from "mongoose";
+import { IInteraction } from "@/types";
 
-export interface IInteraction extends Document {
-  action: string;
-  user: Schema.Types.ObjectId;
-  tags: Schema.Types.ObjectId[];
-  answer: Schema.Types.ObjectId;
-  question: Schema.Types.ObjectId;
-  createdAt: NativeDate;
-  updatedAt: NativeDate;
-}
-const InteractionSchema = new Schema(
+const InteractionSchema: Schema<IInteraction> = new Schema(
   {
     user: {
       ref: "User",
@@ -36,8 +28,8 @@ const InteractionSchema = new Schema(
       },
     ],
   },
-  { timestamps: true }
+  { timestamps: true },
 );
-const Interaction =
+const Interaction: Model<IInteraction> =
   models?.Interaction || model("Interaction", InteractionSchema);
 export default Interaction;

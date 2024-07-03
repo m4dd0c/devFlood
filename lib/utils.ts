@@ -1,4 +1,5 @@
 import { BADGE_CRITERIA } from "@/constants";
+import { ObjectId } from "mongoose";
 import { BadgeCounts } from "@/types";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
@@ -55,7 +56,6 @@ export const formatAndDivideNumber = (num: number): string => {
 };
 
 export const getJoinedDate = (date: Date): string => {
-  console.log("date", date);
   if (!date) return "N/A";
   // Extract the month and year from the Date object
   const month = date.toLocaleString("default", { month: "long" });
@@ -132,4 +132,24 @@ export const assignBadges = (params: BadgeParam) => {
   });
 
   return badgeCounts;
+};
+
+// transform any object or array<object> _id from ObjectId to string;;
+export const transformIdToString = (entity: any): any => {
+  if (!entity) return null;
+  const transformer = (obj: any) => {
+    let newObj = obj.toObject();
+    if (newObj["_id"] && typeof newObj["_id"] !== typeof "some string")
+      newObj["_id"] = newObj["_id"].toString();
+    return newObj;
+  };
+  if (Array.isArray(entity)) {
+    let arr: any = [];
+    entity.forEach((obj) => {
+      arr.push(transformer(obj));
+    });
+    return arr;
+  } else {
+    return transformer(entity);
+  }
 };

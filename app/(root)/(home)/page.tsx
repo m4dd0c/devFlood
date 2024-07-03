@@ -8,7 +8,7 @@ import { HomePageFilters } from "@/constants/filter";
 import { getQuestions } from "@/lib/actions/question.action";
 import Link from "next/link";
 import React from "react";
-
+import { transformIdToString } from "@/lib/utils";
 
 export default async function Home() {
   const result = await getQuestions({
@@ -17,6 +17,11 @@ export default async function Home() {
     pageSize: undefined,
     searchQuery: undefined,
   });
+  const tags = [
+    { _id: "1", name: "Hello" },
+    { _id: "2", name: "world" },
+    { _id: "3", name: "suppppp" },
+  ];
   return (
     <>
       <div className="flex w-full flex-col-reverse justify-between gap-4 sm:flex-row  sm:items-center">
@@ -47,14 +52,14 @@ export default async function Home() {
           // todo:
           result.questions.map((question) => (
             <QuestionCard
-              key={question._id}
+              key={JSON.stringify(question._id)}
               _id={JSON.stringify(question._id)}
               answers={question.answers}
-              author={question.author}
+              author={transformIdToString(question.author)}
               createdAt={question.createdAt}
-              tags={question.tags}
+              tags={transformIdToString(question.tags)}
               title={question.title}
-              upvotes={question.upvotes}
+              upvotes={question.upvotes.map((upvote) => upvote.toString())}
               views={question.views}
             />
           ))

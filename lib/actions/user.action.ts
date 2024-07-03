@@ -10,6 +10,7 @@ import {
   GetUserStatsParams,
   UpdateUserParams,
 } from "./shared.types";
+import { IGetUserAnswers, IQuestionWithAuthorTag, ISaved } from "@/types";
 // import { FilterQuery } from "mongoose";
 import { revalidatePath } from "next/cache";
 import Question from "@/database/question.model";
@@ -159,7 +160,7 @@ export const getSavedQuestions = async ({
     const query: FilterQuery<typeof Question> = searchQuery
       ? { title: { $regex: new RegExp(searchQuery, "i") } }
       : {};
-    const user = await User.findOne({ clerkId }).populate({
+    const user = (await User.findOne({ clerkId }).populate({
       path: "saved",
       model: Question,
       match: query,
@@ -168,10 +169,12 @@ export const getSavedQuestions = async ({
         { path: "tags", model: Tag, select: "_id name" },
         { path: "author", model: User, select: "_id name picture clerkId" },
       ],
-    });
+    })) as unknown as ISaved;
+    if (!user) throw new Error("unauthorized user");
     const savedQuestions = user.saved;
     //FIXME: pagination
     const _user = await User.findOne({ clerkId });
+    if (!_user) throw new Error("unauthorized user");
     const totalSaved = _user.saved.length;
     const isNext = totalSaved > skipAmount + user.saved.length;
     return { isNext, savedQuestions };
@@ -206,12 +209,15 @@ export const getUserQuestions = async ({
     const skipAmount = (page - 1) * pageSize;
 
     const totalQuestions = await Question.countDocuments({ author: userId });
-    const questions = await Question.find({ author: userId })
+    const questions = (await Question.find({ author: userId })
       .sort({ view: -1, upvotes: -1 })
       .limit(pageSize)
       .skip(skipAmount)
       .populate("tags", "_id name")
-      .populate("author", "_id clerkId name picture");
+      .populate(
+        "author",
+        "_id clerkId name picture",
+      )) as unknown as IQuestionWithAuthorTag[];
 
     const isNext = totalQuestions > skipAmount + questions.length;
 
@@ -231,12 +237,15 @@ export const getUserAnswers = async ({
     const skipAmount = (page - 1) * pageSize;
 
     const totalAnswers = await Answer.countDocuments({ author: userId });
-    const answers = await Answer.find({ author: userId })
+    const answers = (await Answer.find({ author: userId })
       .sort({ upvotes: -1 })
       .limit(pageSize)
       .skip(skipAmount)
       .populate("question", "_id title")
-      .populate("author", "_id clerkId name picture");
+      .populate(
+        "author",
+        "_id clerkId name picture",
+      )) as unknown as IGetUserAnswers[];
 
     const isNext = totalAnswers > skipAmount + answers.length;
 

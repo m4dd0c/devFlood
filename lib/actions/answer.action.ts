@@ -11,7 +11,7 @@ import {
   DeleteAnswerParams,
   GetAnswersParams,
 } from "./shared.types";
-
+import { IAnswerWithAuthor } from "@/types";
 export const createAnswer = async ({
   content,
   author,
@@ -59,7 +59,7 @@ export const getAnswers = async ({
       default:
         break;
     }
-    const answers = await Answer.find({ question: questionId })
+    const answers = (await Answer.find({ question: questionId })
       .populate({
         model: User,
         path: "author",
@@ -67,7 +67,7 @@ export const getAnswers = async ({
       })
       .sort(filter)
       .limit(pageSize)
-      .skip(skipAmount);
+      .skip(skipAmount)) as unknown as IAnswerWithAuthor[];
     const totalAnswers = await Answer.countDocuments({ question: questionId });
     const isNext = totalAnswers > skipAmount + answers.length;
     return { answers, isNext };
@@ -152,7 +152,7 @@ export const deleteAnswer = async ({ path, answerId }: DeleteAnswerParams) => {
     await Interaction.deleteMany({ answer: answerId });
     await Question.updateMany(
       { _id: answer.question },
-      { $pull: { answers: answerId } }
+      { $pull: { answers: answerId } },
     );
 
     revalidatePath(path);

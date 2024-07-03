@@ -35,7 +35,7 @@ export default async function Tags() {
           result.tags.map((tag) => (
             <Link
               href={`/tags/${tag._id}`}
-              key={tag._id}
+              key={JSON.stringify(tag._id)}
               className="shadow-light100-darknone"
             >
               <article className="background-light900_dark200 light-border flex w-full flex-col border rounded-2xl px-8 py-10 sm:w-[260px]">
@@ -44,7 +44,12 @@ export default async function Tags() {
                     {tag.name}
                   </p>
                 </div>
-                <p className="small-medium text-dark400_light500 mt-3.5"><span className="body-semibold text-primary-gradient mr-2.5">{tag.questions.length}+</span>Questions</p>
+                <p className="small-medium text-dark400_light500 mt-3.5">
+                  <span className="body-semibold text-primary-gradient mr-2.5">
+                    {tag.questions.length}+
+                  </span>
+                  Questions
+                </p>
               </article>
             </Link>
           ))

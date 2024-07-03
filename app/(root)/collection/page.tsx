@@ -1,4 +1,5 @@
 import QuestionCard from "@/components/cards/QuestionCard";
+import { transformIdToString } from "@/lib/utils";
 import Filters from "@/components/shared/Filters";
 import NoResult from "@/components/shared/NoResult";
 import LocalSearch from "@/components/shared/search/LocalSearch";
@@ -36,16 +37,16 @@ export default async function Home() {
       <div className="mt-10 flex w-full flex-col gap-6">
         {result.savedQuestions.length > 0 ? (
           // todo:
-          result.savedQuestions.map((question: any) => (
+          result.savedQuestions.map((question) => (
             <QuestionCard
-              key={question._id}
+              key={JSON.stringify(question._id)}
               _id={JSON.stringify(question._id)}
               answers={question.answers}
-              author={question.author}
+              author={transformIdToString(question.author)}
               createdAt={question.createdAt}
-              tags={question.tags}
+              tags={transformIdToString(question.tags)}
               title={question.title}
-              upvotes={question.upvotes}
+              upvotes={question.upvotes.map((upvote) => upvote.toString())}
               views={question.views}
             />
           ))

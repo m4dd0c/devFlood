@@ -12,7 +12,7 @@ const page = async () => {
   return (
     <div>
       <div>
-        <Question userId={JSON.stringify(user?._id)} />
+        <Question userId={JSON.stringify(user._id)} />
       </div>
     </div>
   );

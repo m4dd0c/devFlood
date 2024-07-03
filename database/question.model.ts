@@ -1,19 +1,7 @@
 import { model, models, Document, Schema, Model } from "mongoose";
+import { IQuestion } from "@/types";
 
-export interface IQuestion extends Document {
-  title: string;
-  content: string;
-  tags: Schema.Types.ObjectId[];
-  views: number;
-  upvotes: Schema.Types.ObjectId[];
-  downvotes: Schema.Types.ObjectId[];
-  answers: Schema.Types.ObjectId[];
-  author: Schema.Types.ObjectId;
-  createdAt: NativeDate;
-  updatedAt: NativeDate;
-}
-// :Schema<IQuestion>
-const QuestionSchema = new Schema(
+const QuestionSchema: Schema<IQuestion> = new Schema(
   {
     title: {
       type: String,
@@ -58,8 +46,8 @@ const QuestionSchema = new Schema(
       },
     ],
   },
-  { timestamps: true }
+  { timestamps: true },
 );
-// : Model<IQuestion>
-const Question = models?.Question || model("Question", QuestionSchema);
+const Question: Model<IQuestion> =
+  models?.Question || model("Question", QuestionSchema);
 export default Question;

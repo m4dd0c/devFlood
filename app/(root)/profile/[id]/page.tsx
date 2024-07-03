@@ -16,7 +16,8 @@ import AnswerTab from "@/components/shared/AnswerTab";
 const page = async ({ params, searchParams }: URLProps) => {
   const userInfo = await getUserInfo({ userId: params.id });
   const { userId } = auth();
-  console.log("userinfo here ", userInfo.user.createdAt);
+  if (!userId) return null;
+
   return (
     <>
       <div className="flex flex-col-reverse items-start justify-between sm:flex-row">
@@ -52,7 +53,7 @@ const page = async ({ params, searchParams }: URLProps) => {
               )}
 
               <ProfileLink
-                href={userInfo.user.createdAt}
+                href={userInfo.user.createdAt.toString()}
                 imgUrl="/assets/icons/calendar.svg"
                 title={`Joined ${getJoinedDate(userInfo.user.createdAt)}`}
               />
@@ -67,7 +68,7 @@ const page = async ({ params, searchParams }: URLProps) => {
         <div className="flex justify-end max-sm:mb-5 max-sm:w-full sm:mt-2">
           <SignedIn>
             {userId === userInfo.user.clerkId && (
-              <Link href={"/profile/edit"}>
+              <Link href={`/profile/edit/${JSON.stringify(userInfo.user._id)}`}>
                 <Button className="paragraph-medium btn-secondary text-dark300_light900 min-h-[46px] min-w-[175px] px-4 py-3">
                   Edit Profile
                 </Button>
@@ -92,14 +93,14 @@ const page = async ({ params, searchParams }: URLProps) => {
           </TabsList>
           <TabsContent value="top-posts">
             <QuestionTab
-              userId={userInfo.user._id}
+              userId={JSON.stringify(userInfo.user._id)}
               clerkId={userId} // it is from clerk auth()
               searchParams={searchParams}
             />
           </TabsContent>
           <TabsContent value="answers" className="flex w-full flex-col gap-6">
             <AnswerTab
-              userId={userInfo.user._id}
+              userId={JSON.stringify(userInfo.user._id)}
               clerkId={userId} // it is from clerk auth()
               searchParams={searchParams}
             />

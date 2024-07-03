@@ -1,22 +1,6 @@
-import { models, model, Schema, Document, Model } from "mongoose";
-export interface IUser extends Document {
-  _id: Schema.Types.ObjectId;
-  clerkId: string;
-  name: string;
-  username: string;
-  email: string;
-  bio?: string;
-  picture: string;
-  location?: string;
-  password?: string;
-  reputation?: number;
-  portfolioWebsite?: string;
-  saved: Schema.Types.ObjectId[];
-  createdAt: NativeDate;
-  updatedAt: NativeDate;
-}
-// : Schema<IUser>
-const UserSchema = new Schema(
+import { models, model, Schema, Model } from "mongoose";
+import { IUser } from "@/types";
+const UserSchema: Schema<IUser> = new Schema(
   {
     clerkId: {
       type: String,
@@ -39,10 +23,6 @@ const UserSchema = new Schema(
       required: true,
       lowercase: true,
       unique: true,
-    },
-    password: {
-      type: String,
-      minlength: 8,
     },
     bio: {
       type: String,
@@ -68,8 +48,7 @@ const UserSchema = new Schema(
       },
     ],
   },
-  { timestamps: true }
+  { timestamps: true },
 );
-// : Model<IUser>
-const User = models?.User || model("User", UserSchema);
+const User: Model<IUser> = models?.User || model("User", UserSchema);
 export default User;

@@ -53,17 +53,13 @@ const QuestionCard = ({
         </div>
         <SignedIn>
           {showActionButtons && (
-            <EditDeleteAction type="Question" itemId={JSON.parse(_id)} />
+            <EditDeleteAction type="Question" itemId={_id} />
           )}
         </SignedIn>
       </div>
       <div className="flex flex-wrap mt-3.5 gap-2">
         {tags.map((tag) => (
-          <RenderTag
-            _id={JSON.stringify(tag._id)}
-            name={tag.name}
-            key={tag._id}
-          />
+          <RenderTag _id={tag._id} name={tag.name} key={tag._id} />
         ))}
       </div>
       <div className="flex-between flex-wrap w-full gap-3 mt-6">
@@ -71,7 +67,7 @@ const QuestionCard = ({
           imageUrl={author.picture}
           alt="user"
           title={` asked ${getTimestamp(createdAt)}`}
-          href={`/profile/author._id}`}
+          href={`/profile/${author.clerkId}`}
           value={author.name}
           textStyles="body-medium text-dark400_light700"
         />

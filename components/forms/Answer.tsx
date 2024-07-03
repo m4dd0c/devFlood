@@ -34,12 +34,11 @@ const Answer = ({ question, questionId, authorId }: IAnswer) => {
   const onSubmit = async (val: z.infer<typeof AnswerSchema>) => {
     try {
       setIsSubmitting(true);
-      console.log("called");
       await createAnswer({
         content: val.answer,
-        author: authorId,
-        question: questionId,
-        path: `/question/${questionId}`,
+        author: JSON.parse(authorId),
+        question: JSON.parse(questionId),
+        path: `/question/${JSON.parse(questionId)}`,
       });
       val.answer = "";
       setIsSubmitting(false);

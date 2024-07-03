@@ -22,7 +22,7 @@ const EditDeleteAction = ({ type, itemId }: IEditDeleteAction) => {
     }
   };
   const handleEdit = () => {
-    router.push(`/question/edit/${itemId}`);
+    router.push(`/question/edit/${JSON.parse(itemId)}`);
   };
   return (
     <div className="flex justify-end items-center gap-3 max-sm:w-full">

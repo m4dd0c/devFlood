@@ -35,7 +35,10 @@ const AllAnswers = async ({
       </div>
       <div>
         {result.answers.map((answer) => (
-          <article key={answer._id} className="light-border border-b py-10">
+          <article
+            key={JSON.stringify(answer._id)}
+            className="light-border border-b py-10"
+          >
             <div className="flex items-center justify-between">
               {/* span id */}
               <div className="flex flex-col-reverse mb-8 justify-between gap-5 sm:flex-row sm:items-center sm:gap-2">
@@ -63,7 +66,7 @@ const AllAnswers = async ({
                   {/* todo: */}
                   <Votes
                     type="Answer"
-                    userId={JSON.stringify(userId)}
+                    userId={userId}
                     itemId={JSON.stringify(answer._id)}
                     downvotes={answer.downvotes.length}
                     upvotes={answer.upvotes.length}

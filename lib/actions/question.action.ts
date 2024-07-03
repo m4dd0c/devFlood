@@ -15,6 +15,8 @@ import {
 import User from "@/database/user.model";
 import Answer from "@/database/answer.model";
 import Interaction from "@/database/interaction.model";
+import { IGetQuestions, IQuestionWithAuthorTag } from "@/types";
+import { ObjectId } from "mongoose";
 // import { FilterQuery } from "mongoose";
 
 export const getQuestions = async ({
@@ -59,12 +61,12 @@ export const getQuestions = async ({
         break;
     }
 
-    let questions = await Question.find(query)
+    let questions = (await Question.find(query)
       .populate({ path: "tags", model: Tag })
       .populate({ path: "author", model: User })
       .skip(skipAmount)
       .limit(pageSize)
-      .sort(sortOptions);
+      .sort(sortOptions)) as unknown as IGetQuestions[];
 
     const totalQuestions = await Question.countDocuments(query);
     const isNext = totalQuestions > skipAmount + questions.length;
@@ -117,13 +119,13 @@ export const getQuestionById = async ({
 }: GetQuestionByIdParams) => {
   try {
     await connectDB();
-    const question = await Question.findById(questionId)
+    const question = (await Question.findById(questionId)
       .populate({ path: "tags", model: Tag, select: "_id name" })
       .populate({
         path: "author",
         model: User,
         select: "_id clerkId name picture",
-      });
+      })) as unknown as IQuestionWithAuthorTag;
     return question;
   } catch (error: any) {
     console.log(error?.message);
@@ -208,7 +210,7 @@ export const toggleSaveQuestion = async ({
     if (!user) throw new Error("user not found!");
 
     let updateQuery = {};
-    if (user.saved.includes(questionId)) {
+    if (user.saved.includes(questionId as unknown as ObjectId)) {
       updateQuery = { $pull: { saved: questionId } };
     } else {
       updateQuery = { $addToSet: { saved: questionId } };

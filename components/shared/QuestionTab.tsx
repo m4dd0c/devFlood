@@ -2,6 +2,7 @@ import { getUserQuestions } from "@/lib/actions/user.action";
 import { SearchParamsProps } from "@/types";
 import React from "react";
 import QuestionCard from "../cards/QuestionCard";
+import { transformIdToString } from "@/lib/utils";
 
 interface IQuestionTab extends SearchParamsProps {
   userId: string;
@@ -10,7 +11,7 @@ interface IQuestionTab extends SearchParamsProps {
 
 const QuestionTab = async ({ userId, clerkId, searchParams }: IQuestionTab) => {
   const result = await getUserQuestions({
-    userId,
+    userId: JSON.parse(userId),
     page: undefined,
     pageSize: undefined,
   });
@@ -19,15 +20,15 @@ const QuestionTab = async ({ userId, clerkId, searchParams }: IQuestionTab) => {
       {result.questions.length > 0 &&
         result.questions.map((question) => (
           <QuestionCard
-            key={question._id}
-            clerkId={clerkId}
+            key={JSON.stringify(question._id)}
             _id={JSON.stringify(question._id)}
+            clerkId={clerkId}
             answers={question.answers}
-            author={question.author}
+            author={transformIdToString(question.author)}
             createdAt={question.createdAt}
-            tags={question.tags}
+            tags={transformIdToString(question.tags)}
             title={question.title}
-            upvotes={question.upvotes}
+            upvotes={question.upvotes.map((upvote) => upvote.toString())}
             views={question.views}
           />
         ))}

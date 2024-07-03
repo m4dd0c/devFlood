@@ -34,7 +34,7 @@ const AnswerCard = ({
 
   return (
     <Link
-      href={`/question/${question._id}/#${_id}`}
+      href={`/question/${question._id}/#${JSON.parse(_id)}`}
       className="card-wrapper rounded-[10px] px-11 py-9"
     >
       <div className="flex flex-col-reverse items-start justify-between gap-5 sm:flex-row">
@@ -48,9 +48,7 @@ const AnswerCard = ({
         </div>
 
         <SignedIn>
-          {showActionButtons && (
-            <EditDeleteAction type="Answer" itemId={JSON.stringify(_id)} />
-          )}
+          {showActionButtons && <EditDeleteAction type="Answer" itemId={_id} />}
         </SignedIn>
       </div>
 

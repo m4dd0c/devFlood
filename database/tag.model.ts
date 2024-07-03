@@ -1,14 +1,7 @@
 import { models, model, Schema, Document, Model } from "mongoose";
+import { ITag } from "@/types";
 
-export interface ITag extends Document {
-  name: string;
-  description: string;
-  questions: Schema.Types.ObjectId[];
-  createdOn: Date;
-  followers: Schema.Types.ObjectId[];
-}
-// ITag FIXME:
-const TagSchema = new Schema(
+const TagSchema: Schema<ITag> = new Schema(
   {
     name: {
       unique: true,
@@ -24,7 +17,7 @@ const TagSchema = new Schema(
     followers: [{ ref: "User", type: Schema.Types.ObjectId }],
     questions: [{ ref: "Question", type: Schema.Types.ObjectId }],
   },
-  { timestamps: true }
+  { timestamps: true },
 );
-const Tag = models?.Tag || model("Tag", TagSchema);
+const Tag: Model<ITag> = models?.Tag || model("Tag", TagSchema);
 export default Tag;

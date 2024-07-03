@@ -10,6 +10,7 @@ import {
 import Tag from "@/database/tag.model";
 import { FilterQuery } from "mongoose";
 import Question from "@/database/question.model";
+import { ITagQuestions } from "@/types";
 
 export const getTopInteractedTags = async ({
   userId,
@@ -21,6 +22,7 @@ export const getTopInteractedTags = async ({
     if (!user) throw new Error("user not found");
     //find interaction for user and group by tags...
     // interactions...
+    // TODO: complete this
     return [
       { _id: "1", name: "TAG_1" },
       { _id: "2", name: "TAG_2" },
@@ -118,7 +120,7 @@ export const getQuestionsByTagId = async ({
     const query: FilterQuery<typeof Question> = searchQuery
       ? { title: { $regex: new RegExp(searchQuery, "i") } }
       : {};
-    const tag = await Tag.findById(tagId).populate({
+    const tag = (await Tag.findById(tagId).populate({
       path: "questions",
       model: Question,
       match: query,
@@ -127,10 +129,12 @@ export const getQuestionsByTagId = async ({
         { path: "tags", model: Tag, select: "_id name" },
         { path: "author", model: User, select: "_id name picture clerkId" },
       ],
-    });
+    })) as unknown as ITagQuestions;
+    if (!tag) throw new Error("Tag not found");
     const questions = tag.questions;
     //FIXME: pagination
     const _tag = await Tag.findById(tagId);
+    if (!_tag) throw new Error("Tag not found");
     const totalQuestions = _tag.questions.length;
     const isNext = totalQuestions > skipAmount + questions.length;
     return { isNext, questions, tagTitle: tag.name };

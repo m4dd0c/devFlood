@@ -1,15 +1,7 @@
-import { Schema, model, Model, models, Document } from "mongoose";
+import { Schema, model, Model, models } from "mongoose";
+import { IAnswer } from "@/types";
 
-export interface IAnswer extends Document {
-  author: Schema.Types.ObjectId;
-  question: Schema.Types.ObjectId;
-  content: string;
-  upvotes: Schema.Types.ObjectId[];
-  downvotes: Schema.Types.ObjectId[];
-  createdAt: NativeDate;
-  updatedAt: NativeDate;
-}
-const AnswerSchema = new Schema(
+const AnswerSchema: Schema<IAnswer> = new Schema(
   {
     author: {
       ref: "User",
@@ -42,5 +34,5 @@ const AnswerSchema = new Schema(
   },
   { timestamps: true },
 );
-const Answer = models?.Answer || model("Answer", AnswerSchema);
+const Answer: Model<IAnswer> = models?.Answer || model("Answer", AnswerSchema);
 export default Answer;
