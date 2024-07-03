@@ -38,7 +38,6 @@ export const getAllUsers = async ({
   try {
     await connectDB();
     const skipAmount = (page - 1) * pageSize;
-    //fixme: type -===== :FilterQuery<sldf>
     const query = searchQuery
       ? {
           $or: [
@@ -158,7 +157,12 @@ export const getSavedQuestions = async ({
         break;
     }
     const query: FilterQuery<typeof Question> = searchQuery
-      ? { title: { $regex: new RegExp(searchQuery, "i") } }
+      ? {
+          $or: [
+            { title: { $regex: new RegExp(searchQuery, "i") } },
+            { content: { $regex: new RegExp(searchQuery, "i") } },
+          ],
+        }
       : {};
     const user = (await User.findOne({ clerkId }).populate({
       path: "saved",

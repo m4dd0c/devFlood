@@ -62,7 +62,7 @@ export const getAllTags = async ({
         sortOptions = { createdAt: -1 };
         break;
       case "name":
-        sortOptions = { name: -1 };
+        sortOptions = { name: 1 };
         break;
       case "old":
         sortOptions = { createdAt: 1 };
@@ -138,6 +138,20 @@ export const getQuestionsByTagId = async ({
     const totalQuestions = _tag.questions.length;
     const isNext = totalQuestions > skipAmount + questions.length;
     return { isNext, questions, tagTitle: tag.name };
+  } catch (error: any) {
+    console.log(error?.message);
+    throw error;
+  }
+};
+export const getPopularTags = async () => {
+  try {
+    await connectDB();
+    const popularTags = await Tag.aggregate([
+      { $project: { name: 1, numOfQuestions: { $size: "$questions" } } },
+      { $limit: 5 },
+      { $sort: { numOfQuestions: -1 } },
+    ]);
+    return popularTags;
   } catch (error: any) {
     console.log(error?.message);
     throw error;

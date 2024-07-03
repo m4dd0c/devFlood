@@ -7,23 +7,24 @@ import { QuestionFilters } from "@/constants/filter";
 import { getSavedQuestions } from "@/lib/actions/user.action";
 import { auth } from "@clerk/nextjs/server";
 import React from "react";
+import { SearchParamsProps } from "@/types";
 
-export default async function Home() {
+export default async function Collection({ searchParams }: SearchParamsProps) {
   const { userId } = auth();
   if (!userId) return null;
   const result = await getSavedQuestions({
     clerkId: userId,
-    filter: undefined,
+    filter: searchParams.filter,
     page: undefined,
     pageSize: undefined,
-    searchQuery: undefined,
+    searchQuery: searchParams.q,
   });
   return (
     <>
       <h1 className="h1-bold text-dark100_light900">Saved Questions</h1>
       <div className="flex justify-between gap-5 max-sm:flex-col items-center mt-11">
         <LocalSearch
-          route="/"
+          route="/collection"
           iconPosition="left"
           imgSrc="/assets/icons/search.svg"
           placeholder="Search for questions..."

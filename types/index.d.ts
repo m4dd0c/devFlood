@@ -89,6 +89,7 @@ interface IQuestionSnippet {
   title: string;
 }
 export interface IAnswerWithAuthor extends Omit<IAnswer, "author"> {
+  _id: ObjectId;
   author: IAuthor;
 }
 export interface IAuthor {

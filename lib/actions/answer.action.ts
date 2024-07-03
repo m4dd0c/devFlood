@@ -52,10 +52,13 @@ export const getAnswers = async ({
         break;
       case "lowestUpvotes":
         filter = { upvotes: 1 };
-      case "newest":
+        break;
+      case "recent":
         filter = { createdAt: -1 };
+        break;
       case "old":
         filter = { createdAt: 1 };
+        break;
       default:
         break;
     }
@@ -68,6 +71,7 @@ export const getAnswers = async ({
       .sort(filter)
       .limit(pageSize)
       .skip(skipAmount)) as unknown as IAnswerWithAuthor[];
+
     const totalAnswers = await Answer.countDocuments({ question: questionId });
     const isNext = totalAnswers > skipAmount + answers.length;
     return { answers, isNext };

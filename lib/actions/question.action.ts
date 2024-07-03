@@ -33,14 +33,8 @@ export const getQuestions = async ({
     let query: any = searchQuery
       ? {
           $or: [
-            {
-              title: {
-                $regex: new RegExp(searchQuery, "i"),
-              },
-              content: {
-                $regex: new RegExp(searchQuery, "i"),
-              },
-            },
+            { title: { $regex: new RegExp(searchQuery, "i") } },
+            { content: { $regex: new RegExp(searchQuery, "i") } },
           ],
         }
       : {};
@@ -101,7 +95,7 @@ export const createQuestion = async ({
       const newTag = await Tag.findOneAndUpdate(
         { name: { $regex: new RegExp(`^${tag}$`, "i") } },
         { $setOnInsert: { name: tag }, $push: { questions: question._id } },
-        { upsert: true, new: true }
+        { upsert: true, new: true },
       );
       documentTags.push(newTag._id);
     }
@@ -233,7 +227,7 @@ export const deleteQuestion = async ({
     await Interaction.deleteMany({ question: questionId });
     await Tag.updateMany(
       { question: questionId },
-      { $pull: { questions: questionId } }
+      { $pull: { questions: questionId } },
     );
     revalidatePath(path);
   } catch (error: any) {
@@ -256,6 +250,18 @@ export const editQuestion = async ({
     question.content = content;
     await question.save();
     revalidatePath(path);
+  } catch (error: any) {
+    console.log(error?.message);
+    throw error;
+  }
+};
+export const getHotQuestions = async () => {
+  try {
+    await connectDB();
+    const questions = await Question.find()
+      .sort({ upvotes: -1, views: -1 })
+      .limit(5);
+    return questions;
   } catch (error: any) {
     console.log(error?.message);
     throw error;

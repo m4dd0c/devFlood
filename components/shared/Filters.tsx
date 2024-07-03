@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import {
   Select,
@@ -7,6 +8,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useRouter, useSearchParams } from "next/navigation";
+import { formUrlQuery } from "@/lib/utils";
 
 interface IFilters {
   otherClasses?: string;
@@ -18,9 +21,21 @@ interface IFilters {
 }
 
 const Filters = ({ containerClasses, filter, otherClasses }: IFilters) => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const query = searchParams.get("filter");
+
+  const handleClick = (value: string) => {
+    const newUrl = formUrlQuery({
+      params: searchParams.toString(),
+      key: "filter",
+      value,
+    });
+    router.push(newUrl, { scroll: false });
+  };
   return (
     <div className={`relative ${containerClasses}`}>
-      <Select>
+      <Select onValueChange={handleClick} defaultValue={query || undefined}>
         <SelectTrigger
           className={`${otherClasses} body-regular light-border background-light800_dark300 text-dark500_light700 border px-5 py-2.5`}
         >

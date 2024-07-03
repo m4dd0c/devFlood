@@ -17,7 +17,7 @@ const page = async ({
   searchParams,
 }: {
   params: { id: string };
-  searchParams: { pageSize?: string; page?: string; filter?: string };
+  searchParams: { pageSize?: string; page?: number; filter?: string };
 }) => {
   const { userId } = auth();
   if (!userId) return null;
@@ -104,6 +104,8 @@ const page = async ({
         questionId={params.id}
         totalAnswers={result.answers.length}
         userId={JSON.stringify(user._id)}
+        page={searchParams?.page}
+        filter={searchParams?.filter}
       />
       <Answer
         question={result.content}

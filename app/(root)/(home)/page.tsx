@@ -9,19 +9,16 @@ import { getQuestions } from "@/lib/actions/question.action";
 import Link from "next/link";
 import React from "react";
 import { transformIdToString } from "@/lib/utils";
+import { SearchParamsProps } from "@/types";
 
-export default async function Home() {
+export default async function Home({ searchParams }: SearchParamsProps) {
   const result = await getQuestions({
-    filter: undefined,
+    filter: searchParams.filter,
     page: undefined,
     pageSize: undefined,
-    searchQuery: undefined,
+    searchQuery: searchParams.q,
   });
-  const tags = [
-    { _id: "1", name: "Hello" },
-    { _id: "2", name: "world" },
-    { _id: "3", name: "suppppp" },
-  ];
+
   return (
     <>
       <div className="flex w-full flex-col-reverse justify-between gap-4 sm:flex-row  sm:items-center">
