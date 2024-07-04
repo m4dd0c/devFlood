@@ -10,11 +10,10 @@ interface IProps {
   numOfQuestions?: number;
   showCount?: boolean;
 }
-//FIX: fix hydration or nested links
 const RenderTag = ({ _id, name, numOfQuestions, showCount }: IProps) => {
   const router = useRouter();
   const handleClick = () => {
-    router.push(`/tags/${JSON.parse(_id)}`);
+    router.push(`/tags/${_id}`);
   };
   return (
     <div

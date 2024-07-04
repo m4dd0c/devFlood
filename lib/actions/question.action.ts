@@ -21,15 +21,13 @@ import { ObjectId } from "mongoose";
 
 export const getQuestions = async ({
   page = 1,
-  pageSize = 10,
+  pageSize = 20,
   searchQuery,
   filter,
 }: GetQuestionsParams) => {
   try {
     await connectDB();
     const skipAmount = (page - 1) * pageSize;
-    // if searchQuery, using regex w/ or logic otherwise passing {}
-    // fixme:  type ==== : FilterQuery<>
     let query: any = searchQuery
       ? {
           $or: [
