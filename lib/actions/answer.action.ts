@@ -139,6 +139,7 @@ export const upvoteAnswer = async ({
   userId,
 }: AnswerVoteParams) => {
   try {
+    console.log({ hasDownvoted, hasUpvoted, answerId, userId});
     await connectDB();
     let updateQuery = {};
     if (hasDownvoted) {
@@ -180,7 +181,7 @@ export const deleteAnswer = async ({ path, answerId }: DeleteAnswerParams) => {
     await Interaction.deleteMany({ answer: answerId });
     await Question.updateMany(
       { _id: answer.question },
-      { $pull: { answers: answerId } },
+      { $pull: { answers: answerId } }
     );
 
     revalidatePath(path);

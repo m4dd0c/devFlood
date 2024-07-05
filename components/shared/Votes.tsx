@@ -10,6 +10,7 @@ import { formatAndDivideNumber } from "@/lib/utils";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import React, { useEffect } from "react";
+import { toast } from "../ui/use-toast";
 
 interface IVotes {
   type: "Question" | "Answer";
@@ -35,7 +36,12 @@ const Votes = ({
   const pathname = usePathname();
   const router = useRouter();
   const handleVote = async (vote: "upvote" | "downvote") => {
-    if (!userId) return null;
+    if (!userId) {
+      return toast({
+        title: "Login required.",
+        description: "You must login first.",
+      });
+    }
     if (vote === "upvote") {
       if (type === "Question") {
         await upvoteQuestion({
@@ -54,6 +60,10 @@ const Votes = ({
           userId: JSON.parse(userId),
         });
       }
+      return toast({
+        title: `Upvote ${!hasUpvoted ? "Successful" : "Removed"}`,
+        variant: !hasUpvoted ? "default" : "destructive",
+      });
     } else {
       if (type === "Question") {
         await downvoteQuestion({
@@ -72,6 +82,11 @@ const Votes = ({
           userId: JSON.parse(userId),
         });
       }
+
+      return toast({
+        title: `Downvote ${!hasDownvoted ? "Successful" : "Removed"}`,
+        variant: !hasDownvoted ? "default" : "destructive",
+      });
     }
   };
   const handleSave = async () => {
@@ -80,6 +95,10 @@ const Votes = ({
       path: pathname,
       questionId: JSON.parse(itemId),
       userId: JSON.parse(userId),
+    });
+    return toast({
+      title: `Question ${!hasSaved ? "Saved in" : "Removed from"} your collection`,
+      variant: !hasSaved ? "default" : "destructive",
     });
   };
   useEffect(() => {

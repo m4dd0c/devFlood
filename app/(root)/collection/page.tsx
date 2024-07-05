@@ -9,10 +9,18 @@ import { auth } from "@clerk/nextjs/server";
 import React from "react";
 import { SearchParamsProps } from "@/types";
 import Pagination from "@/components/shared/Pagination";
+import { toast } from "@/components/ui/use-toast";
+import { redirect } from "next/navigation";
 
 export default async function Collection({ searchParams }: SearchParamsProps) {
   const { userId } = auth();
-  if (!userId) return null;
+  if (!userId) {
+    toast({
+      title: "Login required.",
+      description: "You must login first!",
+    });
+    return redirect("/sign-in");
+  }
   const result = await getSavedQuestions({
     clerkId: userId,
     filter: searchParams.filter,

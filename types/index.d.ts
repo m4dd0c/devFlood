@@ -81,6 +81,7 @@ export interface ITagQuestions extends Omit<ITag, "questions"> {
   questions: IQuestionWithAuthorTag[];
 }
 export interface IGetUserAnswers extends Omit<IAnswer, "author" | "question"> {
+  _id: ObjectId;
   author: IAuthor;
   question: IQuestionSnippet;
 }

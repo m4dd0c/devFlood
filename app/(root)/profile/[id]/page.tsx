@@ -12,11 +12,19 @@ import { getJoinedDate } from "@/lib/utils";
 import Stats from "@/components/shared/Stats";
 import QuestionTab from "@/components/shared/QuestionTab";
 import AnswerTab from "@/components/shared/AnswerTab";
+import { redirect } from "next/navigation";
+import { toast } from "@/components/ui/use-toast";
 
 const page = async ({ params, searchParams }: URLProps) => {
   const userInfo = await getUserInfo({ userId: params.id });
   const { userId } = auth();
-  if (!userId) return null;
+  if (!userId) {
+    toast({
+      title: "Login required.",
+      description: "You must login first.",
+    });
+    return redirect("/sign-in");
+  }
 
   return (
     <>
@@ -93,7 +101,10 @@ const page = async ({ params, searchParams }: URLProps) => {
               Answers
             </TabsTrigger>
           </TabsList>
-          <TabsContent value="top-posts">
+          <TabsContent
+            value="top-posts"
+            className="flex flex-col w-full mt-5 gap-6"
+          >
             <QuestionTab
               userId={JSON.stringify(userInfo.user._id)}
               clerkId={userId} // it is from clerk auth()
