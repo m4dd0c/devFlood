@@ -56,7 +56,7 @@ export const getAllTags = async ({
 
     return { tags, isNext };
   } catch (error: any) {
-    console.error(error?.message);
+    console.error(error);
     throw error;
   }
 };
@@ -92,7 +92,7 @@ export const getQuestionsByTagId = async ({
     const isNext = totalQuestions > skipAmount + questions.length;
     return { isNext, questions, tagTitle: tag.name };
   } catch (error: any) {
-    console.log(error?.message);
+    console.error(error);
     throw error;
   }
 };
@@ -106,7 +106,7 @@ export const getPopularTags = async () => {
     ]);
     return popularTags;
   } catch (error: any) {
-    console.log(error?.message);
+    console.error(error);
     throw error;
   }
 };

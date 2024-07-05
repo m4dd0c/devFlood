@@ -114,7 +114,6 @@ const page = async ({
         filter={searchParams?.filter}
       />
       <Answer
-        question={result.content}
         authorId={JSON.stringify(user._id)}
         questionId={JSON.stringify(result._id)}
       />

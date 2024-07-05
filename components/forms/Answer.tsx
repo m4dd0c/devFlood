@@ -19,9 +19,8 @@ import { createAnswer } from "@/lib/actions/answer.action";
 interface IAnswer {
   authorId: string;
   questionId: string;
-  question: string;
 }
-const Answer = ({ question, questionId, authorId }: IAnswer) => {
+const Answer = ({ questionId, authorId }: IAnswer) => {
   const editorRef = useRef<null | Editor>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { mode } = useTheme();
@@ -43,7 +42,7 @@ const Answer = ({ question, questionId, authorId }: IAnswer) => {
       val.answer = "";
       setIsSubmitting(false);
     } catch (error: any) {
-      console.error(error?.message);
+      console.error(error);
       throw error;
     }
   };

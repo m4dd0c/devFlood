@@ -19,7 +19,7 @@ export const viewQuestion = async ({
         action: "view",
         question: questionId,
       });
-      if (existingInteraction) return console.log("user already exist!");
+      if (existingInteraction) return;
       // interaction creation
       await Interaction.create({
         user: userId,

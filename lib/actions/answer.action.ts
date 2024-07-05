@@ -42,7 +42,7 @@ export const createAnswer = async ({
     });
     revalidatePath(path);
   } catch (error: any) {
-    console.log(error?.message);
+    console.error(error);
     throw error;
   }
 };
@@ -86,7 +86,7 @@ export const getAnswers = async ({
     const isNext = totalAnswers > skipAmount + answers.length;
     return { answers, isNext };
   } catch (error: any) {
-    console.log(error?.message);
+    console.error(error);
     throw error;
   }
 };
@@ -127,7 +127,7 @@ export const downvoteAnswer = async ({
     });
     revalidatePath(path);
   } catch (error: any) {
-    console.error(error?.message);
+    console.error(error);
     throw error;
   }
 };
@@ -139,7 +139,6 @@ export const upvoteAnswer = async ({
   userId,
 }: AnswerVoteParams) => {
   try {
-    console.log({ hasDownvoted, hasUpvoted, answerId, userId });
     await connectDB();
     let updateQuery = {};
     if (hasDownvoted) {
@@ -166,7 +165,7 @@ export const upvoteAnswer = async ({
     });
     revalidatePath(path);
   } catch (error: any) {
-    console.error(error?.message);
+    console.error(error);
     throw error;
   }
 };
@@ -181,12 +180,12 @@ export const deleteAnswer = async ({ path, answerId }: DeleteAnswerParams) => {
     await Interaction.deleteMany({ answer: answerId });
     await Question.updateMany(
       { _id: answer.question },
-      { $pull: { answers: answerId } },
+      { $pull: { answers: answerId } }
     );
 
     revalidatePath(path);
   } catch (error: any) {
-    console.log(error?.message);
+    console.error(error);
     throw error;
   }
 };

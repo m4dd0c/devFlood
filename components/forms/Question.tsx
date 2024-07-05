@@ -71,8 +71,8 @@ const Question = ({ userId, type = "Create", questionDetails }: IQuestion) => {
         router.push("/");
       }
     } catch (error: any) {
-      console.error(error.message);
-      throw new Error(error.message);
+      console.error(error);
+      throw error;
     } finally {
       setIsSubmitting(false);
     }
@@ -85,7 +85,7 @@ const Question = ({ userId, type = "Create", questionDetails }: IQuestion) => {
 
   const handleKeyDown = (
     e: React.KeyboardEvent<HTMLInputElement>,
-    field: any,
+    field: any
   ) => {
     if (e.key === "Enter" && field.name === "tags") {
       e.preventDefault();

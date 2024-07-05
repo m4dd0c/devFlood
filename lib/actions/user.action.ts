@@ -29,7 +29,7 @@ export const getUserById = async ({ userId }: GetUserByIdParams) => {
     const user = await User.findOne({ clerkId: userId });
     return user;
   } catch (error: any) {
-    console.log(error.message);
+    console.error(error);
     throw error;
   }
 };
@@ -72,7 +72,7 @@ export const getAllUsers = async ({
     const isNext = totalUsers > skipAmount + users.length;
     return { users, isNext };
   } catch (error: any) {
-    console.error(error.message);
+    console.error(error);
     throw error;
   }
 };
@@ -91,7 +91,7 @@ export const updateUser = async ({
 
     revalidatePath(path);
   } catch (error: any) {
-    console.error(error.message);
+    console.error(error);
     throw error;
   }
 };
@@ -101,7 +101,7 @@ export const createUser = async (userData: CreateUserParams) => {
     const user = await User.create(userData);
     return user;
   } catch (error: any) {
-    console.error(error.message);
+    console.error(error);
     throw error;
   }
 };
@@ -115,7 +115,7 @@ export const deleteUser = async ({ clerkId }: DeleteUserParams) => {
     const deletedUser = await User.findByIdAndDelete(user._id);
     return deletedUser;
   } catch (error: any) {
-    console.error(error.message);
+    console.error(error);
     throw error;
   }
 };
@@ -171,14 +171,13 @@ export const getSavedQuestions = async ({
     })) as unknown as ISaved;
     if (!user) throw new Error("unauthorized user");
     const savedQuestions = user.saved;
-    //FIXME: pagination
     const _user = await User.findOne({ clerkId });
     if (!_user) throw new Error("unauthorized user");
     const totalSaved = _user.saved.length;
     const isNext = totalSaved > skipAmount + user.saved.length;
     return { isNext, savedQuestions };
   } catch (error: any) {
-    console.error(error?.message);
+    console.error(error);
     throw error;
   }
 };
@@ -231,7 +230,7 @@ export const getUserInfo = async ({ userId }: GetUserByIdParams) => {
     const badgeCount = assignBadges({ criteria });
     return { user, totalQuestions, totalAnswers, badgeCount };
   } catch (error: any) {
-    console.error(error.message);
+    console.error(error);
     throw error;
   }
 };
@@ -253,14 +252,14 @@ export const getUserQuestions = async ({
       .populate("tags", "_id name")
       .populate(
         "author",
-        "_id clerkId name picture",
+        "_id clerkId name picture"
       )) as unknown as IQuestionWithAuthorTag[];
 
     const isNext = totalQuestions > skipAmount + questions.length;
 
     return { questions, totalQuestions, isNext };
   } catch (error: any) {
-    console.error(error.message);
+    console.error(error);
     throw error;
   }
 };
@@ -281,14 +280,14 @@ export const getUserAnswers = async ({
       .populate("question", "_id title")
       .populate(
         "author",
-        "_id clerkId name picture",
+        "_id clerkId name picture"
       )) as unknown as IGetUserAnswers[];
 
     const isNext = totalAnswers > skipAmount + answers.length;
 
     return { answers, totalAnswers, isNext };
   } catch (error: any) {
-    console.error(error.message);
+    console.error(error);
     throw error;
   }
 };

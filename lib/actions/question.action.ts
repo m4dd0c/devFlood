@@ -20,7 +20,6 @@ import { IGetQuestions, IQuestionWithAuthorTag } from "@/types";
 import { ObjectId } from "mongoose";
 import { FilterQuery } from "mongoose";
 
-//TODO: setup recommandation system
 export const getQuestions = async ({
   page = 1,
   pageSize = 20,
@@ -66,7 +65,7 @@ export const getQuestions = async ({
     const isNext = totalQuestions > skipAmount + questions.length;
     return { questions, isNext };
   } catch (error: any) {
-    console.error(error.message);
+    console.error(error);
     throw error;
   }
 };
@@ -95,7 +94,7 @@ export const createQuestion = async ({
       const newTag = await Tag.findOneAndUpdate(
         { name: { $regex: new RegExp(`^${tag}$`, "i") } },
         { $setOnInsert: { name: tag }, $push: { questions: question._id } },
-        { upsert: true, new: true },
+        { upsert: true, new: true }
       );
       documentTags.push(newTag._id);
     }
@@ -114,7 +113,8 @@ export const createQuestion = async ({
     await User.findByIdAndUpdate(author, { $inc: { reputation: 5 } });
     revalidatePath(path);
   } catch (error: any) {
-    console.log(error.message);
+    console.error(error);
+    throw error;
   }
 };
 
@@ -132,7 +132,7 @@ export const getQuestionById = async ({
       })) as unknown as IQuestionWithAuthorTag;
     return question;
   } catch (error: any) {
-    console.log(error?.message);
+    console.error(error);
     throw error;
   }
 };
@@ -174,7 +174,7 @@ export const downvoteQuestion = async ({
     });
     revalidatePath(path);
   } catch (error: any) {
-    console.error(error?.message);
+    console.error(error);
     throw error;
   }
 };
@@ -213,7 +213,7 @@ export const upvoteQuestion = async ({
     });
     revalidatePath(path);
   } catch (error: any) {
-    console.error(error?.message);
+    console.error(error);
     throw error;
   }
 };
@@ -237,7 +237,7 @@ export const toggleSaveQuestion = async ({
     await User.updateOne({ _id: userId }, updateQuery, { new: true });
     revalidatePath(path);
   } catch (error: any) {
-    console.log(error?.message);
+    console.error(error);
     throw error;
   }
 };
@@ -252,11 +252,11 @@ export const deleteQuestion = async ({
     await Interaction.deleteMany({ question: questionId });
     await Tag.updateMany(
       { question: questionId },
-      { $pull: { questions: questionId } },
+      { $pull: { questions: questionId } }
     );
     revalidatePath(path);
   } catch (error: any) {
-    console.log(error?.message);
+    console.error(error);
     throw error;
   }
 };
@@ -276,7 +276,7 @@ export const editQuestion = async ({
     await question.save();
     revalidatePath(path);
   } catch (error: any) {
-    console.log(error?.message);
+    console.error(error);
     throw error;
   }
 };
@@ -288,7 +288,7 @@ export const getHotQuestions = async () => {
       .limit(5);
     return questions;
   } catch (error: any) {
-    console.log(error?.message);
+    console.error(error);
     throw error;
   }
 };
@@ -328,8 +328,6 @@ export async function getRecommendedQuestions({
       // @ts-ignore
       ...new Set(userTags.map((tag: any) => tag._id)),
     ];
-    console.log({ userTags, userInteractions, distinctUserTagIds });
-
     const query: FilterQuery<typeof Question> = {
       $and: [
         { tags: { $in: distinctUserTagIds } }, // Questions with user's tags

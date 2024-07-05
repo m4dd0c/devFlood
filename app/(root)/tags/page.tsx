@@ -2,7 +2,7 @@ import Filters from "@/components/shared/Filters";
 import NoResult from "@/components/shared/NoResult";
 import Pagination from "@/components/shared/Pagination";
 import LocalSearch from "@/components/shared/search/LocalSearch";
-import { TagFilters, UserFilters } from "@/constants/filter";
+import { TagFilters } from "@/constants/filter";
 import { getAllTags } from "@/lib/actions/tag.action";
 import { SearchParamsProps } from "@/types";
 import { Metadata } from "next";

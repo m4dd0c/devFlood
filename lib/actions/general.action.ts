@@ -43,7 +43,7 @@ export const globalSearch = async ({ type, query }: SearchParams) => {
                 : item[
                     searchField
                   ] /* for User and Tag model returning name, for question returning title*/,
-          })),
+          }))
         );
       }
     } else {
@@ -69,10 +69,9 @@ export const globalSearch = async ({ type, query }: SearchParams) => {
               : item._id,
       }));
     }
-    console.log(result);
     return JSON.stringify(result);
   } catch (error: any) {
-    console.error(error?.message);
+    console.error(error);
     throw error;
   }
 };
