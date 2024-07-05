@@ -10,13 +10,18 @@ import {
   GetUserStatsParams,
   UpdateUserParams,
 } from "./shared.types";
-import { IGetUserAnswers, IQuestionWithAuthorTag, ISaved } from "@/types";
-// import { FilterQuery } from "mongoose";
+import {
+  BadgeCriteriaType,
+  IGetUserAnswers,
+  IQuestionWithAuthorTag,
+  ISaved,
+} from "@/types";
 import { revalidatePath } from "next/cache";
 import Question from "@/database/question.model";
 import Tag from "@/database/tag.model";
 import { FilterQuery } from "mongoose";
 import Answer from "@/database/answer.model";
+import { assignBadges } from "../utils";
 
 export const getUserById = async ({ userId }: GetUserByIdParams) => {
   try {
@@ -196,7 +201,45 @@ export const getUserInfo = async ({ userId }: GetUserByIdParams) => {
     if (!user) throw new Error("user unauthorized");
     const totalQuestions = await Question.countDocuments({ author: user._id });
     const totalAnswers = await Answer.countDocuments({ author: user._id });
-    return { user, totalQuestions, totalAnswers };
+    // badge
+    // totalUpvotes X user got on his/her all questions
+    const [questionUpvotes] = await Question.aggregate([
+      //stage one
+      { $match: { author: user._id } },
+      // stage two
+      { $project: { _id: 0, upvotes: { $size: "$upvotes" } } },
+      // stage three
+      { $group: { _id: null, totalUpvotes: { $sum: "$upvotes" } } },
+    ]);
+    // totalUpvotes X user got on his/her all answers
+    const [answerUpvotes] = await Answer.aggregate([
+      { $match: { author: user._id } },
+      { $project: { _id: 0, upvotes: { $size: "$upvotes" } } },
+      { $group: { _id: null, totalUpvotes: { $sum: "$upvotes" } } },
+    ]);
+    // totalViews X user got on there Questions
+    const [questionViews] = await Question.aggregate([
+      { $match: { author: user._id } },
+      { $group: { _id: null, totalViews: { $sum: "$views" } } },
+    ]);
+    const criteria = [
+      { type: "QUESTION_COUNT" as BadgeCriteriaType, count: totalQuestions },
+      { type: "ANSWER_COUNT" as BadgeCriteriaType, count: totalAnswers },
+      {
+        type: "QUESTION_UPVOTES" as BadgeCriteriaType,
+        count: questionUpvotes?.totalUpvotes,
+      },
+      {
+        type: "ANSWER_UPVOTES" as BadgeCriteriaType,
+        count: answerUpvotes?.totalUpvotes,
+      },
+      {
+        type: "TOTAL_VIEWS" as BadgeCriteriaType,
+        count: questionViews?.totalViews,
+      },
+    ];
+    const badgeCount = assignBadges({ criteria });
+    return { user, totalQuestions, totalAnswers, badgeCount };
   } catch (error: any) {
     console.error(error.message);
     throw error;
@@ -214,7 +257,7 @@ export const getUserQuestions = async ({
 
     const totalQuestions = await Question.countDocuments({ author: userId });
     const questions = (await Question.find({ author: userId })
-      .sort({ view: -1, upvotes: -1 })
+      .sort({ createdAt: -1, view: -1, upvotes: -1 })
       .limit(pageSize)
       .skip(skipAmount)
       .populate("tags", "_id name")

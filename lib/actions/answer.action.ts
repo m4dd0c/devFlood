@@ -26,10 +26,20 @@ export const createAnswer = async ({
       question,
     });
     // adding answer to question
-    await Question.findByIdAndUpdate(question, {
+    const questionObj = await Question.findByIdAndUpdate(question, {
       $push: { answers: answer._id },
     });
-    // TODO: interaction
+    if (!questionObj) throw new Error("can't find question");
+    await Interaction.create({
+      user: author,
+      action: "answer",
+      question,
+      tags: questionObj.tags,
+      answer: answer._id,
+    });
+    await User.findByIdAndUpdate(answer.author, {
+      $inc: { reputation: 10 },
+    });
     revalidatePath(path);
   } catch (error: any) {
     console.log(error?.message);
@@ -108,6 +118,13 @@ export const downvoteAnswer = async ({
     });
     if (!answer) throw new Error("Answer not found!");
     //increment authors reputation
+    await User.findByIdAndUpdate(userId, {
+      $inc: { reputation: hasDownvoted ? -2 : 2 },
+    });
+    //increment authors reputation
+    await User.findByIdAndUpdate(answer.author, {
+      $inc: { reputation: hasDownvoted ? -10 : 10 },
+    });
     revalidatePath(path);
   } catch (error: any) {
     console.error(error?.message);
@@ -139,6 +156,13 @@ export const upvoteAnswer = async ({
     });
     if (!answer) throw new Error("Answer not found!");
     //increment authors reputation
+    await User.findByIdAndUpdate(userId, {
+      $inc: { reputation: hasUpvoted ? -2 : 2 },
+    });
+    //increment authors reputation
+    await User.findByIdAndUpdate(answer.author, {
+      $inc: { reputation: hasUpvoted ? -10 : 10 },
+    });
     revalidatePath(path);
   } catch (error: any) {
     console.error(error?.message);

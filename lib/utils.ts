@@ -74,29 +74,6 @@ interface BadgeParam {
   }[];
 }
 
-export const assignBadges = (params: BadgeParam) => {
-  const badgeCounts: BadgeCounts = {
-    GOLD: 0,
-    SILVER: 0,
-    BRONZE: 0,
-  };
-
-  const { criteria } = params;
-
-  criteria.forEach((item) => {
-    const { type, count } = item;
-    const badgeLevels: any = BADGE_CRITERIA[type];
-
-    Object.keys(badgeLevels).forEach((level: any) => {
-      if (count >= badgeLevels[level]) {
-        badgeCounts[level as keyof BadgeCounts] += 1;
-      }
-    });
-  });
-
-  return badgeCounts;
-};
-
 // transform any object or array<object> _id from ObjectId to string;;
 export const transformIdToString = (entity: any): any => {
   if (!entity) return null;
@@ -152,4 +129,29 @@ export const removeKeysFromUrl = ({
     },
     { skipNull: true },
   );
+};
+
+interface IBadge {
+  criteria: {
+    type: keyof typeof BADGE_CRITERIA;
+    count: number;
+  }[];
+}
+export const assignBadges = ({ criteria }: IBadge) => {
+  const badgeCounts: BadgeCounts = {
+    GOLD: 0,
+    SILVER: 0,
+    BRONZE: 0,
+  };
+
+  criteria.forEach((item) => {
+    const { type, count } = item;
+    const badgeLevels: any = BADGE_CRITERIA[type];
+    Object.keys(badgeLevels).forEach((level: any) => {
+      if (count >= badgeLevels[level]) {
+        badgeCounts[level as keyof BadgeCounts] += 1;
+      }
+    });
+  });
+  return badgeCounts;
 };
