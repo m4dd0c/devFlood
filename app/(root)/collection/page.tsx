@@ -11,7 +11,13 @@ import { SearchParamsProps } from "@/types";
 import Pagination from "@/components/shared/Pagination";
 import { toast } from "@/components/ui/use-toast";
 import { redirect } from "next/navigation";
+import { Metadata } from "next";
 
+export const metadata: Metadata = {
+  title: "Collection | DevFlood",
+  description:
+    "A platform for asking and answering programming questions. Get help, share knowledge, and collaborate with developers around the world. Explore topics in web development, mobile development, algorithms, data structure, and more.",
+};
 export default async function Collection({ searchParams }: SearchParamsProps) {
   const { userId } = auth();
   if (!userId) {
@@ -46,7 +52,6 @@ export default async function Collection({ searchParams }: SearchParamsProps) {
       </div>
       <div className="mt-10 flex w-full flex-col gap-6">
         {result.savedQuestions.length > 0 ? (
-          // todo:
           result.savedQuestions.map((question) => (
             <QuestionCard
               key={JSON.stringify(question._id)}

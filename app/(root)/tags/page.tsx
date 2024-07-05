@@ -5,9 +5,15 @@ import LocalSearch from "@/components/shared/search/LocalSearch";
 import { TagFilters, UserFilters } from "@/constants/filter";
 import { getAllTags } from "@/lib/actions/tag.action";
 import { SearchParamsProps } from "@/types";
+import { Metadata } from "next";
 import Link from "next/link";
 import React from "react";
 
+export const metadata: Metadata = {
+  title: "Tags | DevFlood",
+  description:
+    "A platform for asking and answering programming questions. Get help, share knowledge, and collaborate with developers around the world. Explore topics in web development, mobile development, algorithms, data structure, and more.",
+};
 export default async function Tags({ searchParams }: SearchParamsProps) {
   const result = await getAllTags({
     filter: searchParams.filter,

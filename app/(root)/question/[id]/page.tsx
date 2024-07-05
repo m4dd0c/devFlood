@@ -11,7 +11,13 @@ import AllAnswers from "@/components/shared/AllAnswers";
 import { getUserById } from "@/lib/actions/user.action";
 import { auth } from "@clerk/nextjs/server";
 import Votes from "@/components/shared/Votes";
+import { Metadata } from "next";
 
+export const metadata: Metadata = {
+  title: "Question | DevFlood",
+  description:
+    "A platform for asking and answering programming questions. Get help, share knowledge, and collaborate with developers around the world. Explore topics in web development, mobile development, algorithms, data structure, and more.",
+};
 const page = async ({
   params,
   searchParams,

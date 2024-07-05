@@ -17,7 +17,6 @@ const LeftSidebar = () => {
           const isActive =
             (pathname.includes(item.route) && item.route.length > 1) ||
             pathname === item.route;
-          //TODO: setup profile navigation w/ id
           if (item.route === "/profile") {
             if (userId) {
               item.route = `${item.route}/${userId}`;

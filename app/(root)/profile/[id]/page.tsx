@@ -14,7 +14,13 @@ import QuestionTab from "@/components/shared/QuestionTab";
 import AnswerTab from "@/components/shared/AnswerTab";
 import { redirect } from "next/navigation";
 import { toast } from "@/components/ui/use-toast";
+import { Metadata } from "next";
 
+export const metadata: Metadata = {
+  title: "Profile | DevFlood",
+  description:
+    "A platform for asking and answering programming questions. Get help, share knowledge, and collaborate with developers around the world. Explore topics in web development, mobile development, algorithms, data structure, and more.",
+};
 const page = async ({ params, searchParams }: URLProps) => {
   const userInfo = await getUserInfo({ userId: params.id });
   const { userId } = auth();
@@ -54,7 +60,7 @@ const page = async ({ params, searchParams }: URLProps) => {
               )}
               {userInfo.user.location && (
                 <ProfileLink
-                  href={userInfo.user.location}
+                  href={`https://www.google.co.in/maps/place/${userInfo.user.location}`}
                   imgUrl="/assets/icons/location.svg"
                   title="Location"
                 />
@@ -76,7 +82,7 @@ const page = async ({ params, searchParams }: URLProps) => {
         <div className="flex justify-end max-sm:mb-5 max-sm:w-full sm:mt-2">
           <SignedIn>
             {userId === userInfo.user.clerkId && (
-              <Link href={`/profile/edit/${JSON.stringify(userInfo.user._id)}`}>
+              <Link href={`/profile/edit/${userInfo.user._id}`}>
                 <Button className="paragraph-medium btn-secondary text-dark300_light900 min-h-[46px] min-w-[175px] px-4 py-3">
                   Edit Profile
                 </Button>

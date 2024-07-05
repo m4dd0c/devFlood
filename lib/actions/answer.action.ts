@@ -49,7 +49,7 @@ export const createAnswer = async ({
 export const getAnswers = async ({
   page = 1,
   sortBy,
-  pageSize = 10,
+  pageSize = 20,
   questionId,
 }: GetAnswersParams) => {
   try {
@@ -139,7 +139,7 @@ export const upvoteAnswer = async ({
   userId,
 }: AnswerVoteParams) => {
   try {
-    console.log({ hasDownvoted, hasUpvoted, answerId, userId});
+    console.log({ hasDownvoted, hasUpvoted, answerId, userId });
     await connectDB();
     let updateQuery = {};
     if (hasDownvoted) {
@@ -181,7 +181,7 @@ export const deleteAnswer = async ({ path, answerId }: DeleteAnswerParams) => {
     await Interaction.deleteMany({ answer: answerId });
     await Question.updateMany(
       { _id: answer.question },
-      { $pull: { answers: answerId } }
+      { $pull: { answers: answerId } },
     );
 
     revalidatePath(path);

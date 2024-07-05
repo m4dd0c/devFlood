@@ -12,8 +12,8 @@ interface IQuestionTab extends SearchParamsProps {
 const QuestionTab = async ({ userId, clerkId, searchParams }: IQuestionTab) => {
   const result = await getUserQuestions({
     userId: JSON.parse(userId),
-    page: undefined,
-    pageSize: undefined,
+    page: searchParams?.page ? +searchParams.page : 1,
+    pageSize: searchParams?.pageSize ? +searchParams.pageSize : 20,
   });
   return (
     <>

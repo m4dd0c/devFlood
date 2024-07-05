@@ -110,19 +110,9 @@ export const deleteUser = async ({ clerkId }: DeleteUserParams) => {
     await connectDB();
     const user = await User.findOneAndDelete({ clerkId });
     if (!user) throw new Error("User not found");
-    // Delete user from database
-    // and questions, answers, comments, etc.
-
-    // get user question ids
-    // const userQuestionIds = await Question.find({ author: user._id}).distinct('_id');
-
     // delete user questions
     await Question.deleteMany({ author: user._id });
-
-    // TODO: delete user answers, comments, etc.
-
     const deletedUser = await User.findByIdAndDelete(user._id);
-
     return deletedUser;
   } catch (error: any) {
     console.error(error.message);
@@ -134,7 +124,7 @@ export const getSavedQuestions = async ({
   clerkId,
   filter,
   page = 1,
-  pageSize = 10,
+  pageSize = 20,
   searchQuery,
 }: GetSavedQuestionsParams) => {
   try {
@@ -249,7 +239,7 @@ export const getUserInfo = async ({ userId }: GetUserByIdParams) => {
 export const getUserQuestions = async ({
   userId,
   page = 1,
-  pageSize = 10,
+  pageSize = 20,
 }: GetUserStatsParams) => {
   try {
     await connectDB();
@@ -277,7 +267,7 @@ export const getUserQuestions = async ({
 export const getUserAnswers = async ({
   userId,
   page = 1,
-  pageSize = 10,
+  pageSize = 20,
 }: GetUserStatsParams) => {
   try {
     await connectDB();

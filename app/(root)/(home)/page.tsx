@@ -6,19 +6,46 @@ import NoResult from "@/components/shared/NoResult";
 import LocalSearch from "@/components/shared/search/LocalSearch";
 import { Button } from "@/components/ui/button";
 import { HomePageFilters } from "@/constants/filter";
-import { getQuestions } from "@/lib/actions/question.action";
+import {
+  getQuestions,
+  getRecommendedQuestions,
+} from "@/lib/actions/question.action";
 import Link from "next/link";
 import React from "react";
 import { transformIdToString } from "@/lib/utils";
 import { SearchParamsProps } from "@/types";
+import { Metadata } from "next";
+import { auth } from "@clerk/nextjs/server";
+
+export const metadata: Metadata = {
+  title: "Home | DevFlood",
+  description:
+    "A platform for asking and answering programming questions. Get help, share knowledge, and collaborate with developers around the world. Explore topics in web development, mobile development, algorithms, data structure, and more.",
+};
 
 export default async function Home({ searchParams }: SearchParamsProps) {
-  const result = await getQuestions({
-    filter: searchParams.filter,
-    page: searchParams?.page ? +searchParams?.page : 1,
-    pageSize: searchParams?.pageSize ? +searchParams?.pageSize : 20,
-    searchQuery: searchParams.q,
-  });
+  const { userId } = auth();
+  let result: any = {
+    questions: [],
+    isNext: false,
+  };
+  if (searchParams?.filter?.toLowerCase() === "recommended") {
+    if (userId) {
+      result = await getRecommendedQuestions({
+        page: searchParams?.page ? +searchParams?.page : 1,
+        pageSize: searchParams?.pageSize ? +searchParams?.pageSize : 20,
+        searchQuery: searchParams.q,
+        userId,
+      });
+    }
+  } else {
+    result = await getQuestions({
+      filter: searchParams.filter,
+      page: searchParams?.page ? +searchParams?.page : 1,
+      pageSize: searchParams?.pageSize ? +searchParams?.pageSize : 20,
+      searchQuery: searchParams.q,
+    });
+  }
 
   return (
     <>
@@ -47,8 +74,7 @@ export default async function Home({ searchParams }: SearchParamsProps) {
       <HomeFilters />
       <div className="mt-10 flex w-full flex-col gap-6">
         {result.questions.length > 0 ? (
-          // todo:
-          result.questions.map((question) => (
+          result.questions.map((question: any) => (
             <QuestionCard
               key={JSON.stringify(question._id)}
               _id={JSON.stringify(question._id)}
@@ -57,7 +83,7 @@ export default async function Home({ searchParams }: SearchParamsProps) {
               createdAt={question.createdAt}
               tags={transformIdToString(question.tags)}
               title={question.title}
-              upvotes={question.upvotes.map((upvote) => upvote.toString())}
+              upvotes={question.upvotes.map((upvote: any) => upvote.toString())}
               views={question.views}
             />
           ))

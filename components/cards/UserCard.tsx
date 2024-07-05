@@ -1,23 +1,15 @@
-import { getTopInteractedTags } from "@/lib/actions/tag.action";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import RenderTag from "../shared/RenderTag";
-import { Badge } from "../ui/badge";
 
 interface IUser {
-  _id: string;
   clerkId: string;
   name: string;
   username: string;
   picture: string;
 }
 
-const UserCard = async ({ _id, clerkId, name, username, picture }: IUser) => {
-  const interactedTags = await getTopInteractedTags({
-    userId: JSON.parse(_id),
-    limit: 3,
-  });
+const UserCard = async ({ clerkId, name, username, picture }: IUser) => {
   return (
     <Link
       href={`/profile/${clerkId}`}
@@ -34,17 +26,6 @@ const UserCard = async ({ _id, clerkId, name, username, picture }: IUser) => {
         <div className="mt-4 text-center">
           <h3 className="h3-bold text-dark200_light900 line-clamp-1">{name}</h3>
           <p className="body-regular text-dark500_light500 mt-2">@{username}</p>
-        </div>
-        <div className="mt-5">
-          {interactedTags.length > 0 ? (
-            <div className="flex items-center gap-2">
-              {interactedTags.map((tag) => (
-                <RenderTag _id={tag._id} name={tag.name} key={tag._id} />
-              ))}
-            </div>
-          ) : (
-            <Badge>No tag yet</Badge>
-          )}
         </div>
       </article>
     </Link>

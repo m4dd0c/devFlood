@@ -2,7 +2,7 @@
 import { HomePageFilters } from "@/constants/filter";
 import React, { useState } from "react";
 import { Button } from "../ui/button";
-import { useSearchParams, usePathname, useRouter } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { formUrlQuery } from "@/lib/utils";
 
 const HomeFilters = () => {

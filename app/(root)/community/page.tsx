@@ -7,7 +7,13 @@ import { getAllUsers } from "@/lib/actions/user.action";
 import { SearchParamsProps } from "@/types";
 import Link from "next/link";
 import React from "react";
+import { Metadata } from "next";
 
+export const metadata: Metadata = {
+  title: "Community | DevFlood",
+  description:
+    "A platform for asking and answering programming questions. Get help, share knowledge, and collaborate with developers around the world. Explore topics in web development, mobile development, algorithms, data structure, and more.",
+};
 export default async function Community({ searchParams }: SearchParamsProps) {
   const result = await getAllUsers({
     filter: searchParams.filter,
@@ -37,7 +43,6 @@ export default async function Community({ searchParams }: SearchParamsProps) {
           result.users.map((user) => (
             <UserCard
               key={JSON.stringify(user._id)}
-              _id={JSON.stringify(user._id)}
               name={user.name}
               username={user.username}
               picture={user.picture}

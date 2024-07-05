@@ -2,41 +2,16 @@
 
 import User from "@/database/user.model";
 import { connectDB } from "../mongoose";
-import {
-  GetAllTagsParams,
-  GetQuestionsByTagIdParams,
-  GetTopInteractedTagsParams,
-} from "./shared.types";
+import { GetAllTagsParams, GetQuestionsByTagIdParams } from "./shared.types";
 import Tag from "@/database/tag.model";
 import { FilterQuery } from "mongoose";
 import Question from "@/database/question.model";
 import { ITagQuestions } from "@/types";
 
-export const getTopInteractedTags = async ({
-  userId,
-  limit = 3,
-}: GetTopInteractedTagsParams) => {
-  try {
-    await connectDB();
-    const user = await User.findById(userId);
-    if (!user) throw new Error("user not found");
-    //find interaction for user and group by tags...
-    // interactions...
-    // TODO: complete this
-    return [
-      { _id: "1", name: "TAG_1" },
-      { _id: "2", name: "TAG_2" },
-      { _id: "3", name: "TAG_3" },
-    ];
-  } catch (error: any) {
-    console.error(error?.message);
-    throw error;
-  }
-};
 export const getAllTags = async ({
   filter,
   page = 1,
-  pageSize = 10,
+  pageSize = 20,
   searchQuery,
 }: GetAllTagsParams) => {
   try {
@@ -89,34 +64,13 @@ export const getAllTags = async ({
 export const getQuestionsByTagId = async ({
   tagId,
   page = 1,
-  pageSize = 10,
+  pageSize = 20,
   searchQuery,
 }: GetQuestionsByTagIdParams) => {
   try {
     await connectDB();
     const skipAmount = (page - 1) * pageSize;
     let sortOptions = { createdAt: -1 };
-    // TODO: might later
-    // switch (filter) {
-    //   case "most_recent":
-    //     sortOptions = { createdAt: -1 };
-    //     break;
-    //   case "most_viewed":
-    //     sortOptions = { views: -1 };
-    //     break;
-    //   case "oldest":
-    //     sortOptions = { createdAt: 1 };
-    //     break;
-    //   case "most_voted":
-    //     sortOptions = { upvotes: -1 };
-    //     break;
-    //   case "most_answered":
-    //     sortOptions = { answers: -1 };
-    //     break;
-
-    //   default:
-    //     break;
-    // }
     const query: FilterQuery<typeof Question> = searchQuery
       ? { title: { $regex: new RegExp(searchQuery, "i") } }
       : {};
@@ -132,7 +86,6 @@ export const getQuestionsByTagId = async ({
     })) as unknown as ITagQuestions;
     if (!tag) throw new Error("Tag not found");
     const questions = tag.questions;
-    //FIXME: pagination
     const _tag = await Tag.findById(tagId);
     if (!_tag) throw new Error("Tag not found");
     const totalQuestions = _tag.questions.length;

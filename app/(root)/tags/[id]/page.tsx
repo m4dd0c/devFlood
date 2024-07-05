@@ -4,7 +4,13 @@ import Pagination from "@/components/shared/Pagination";
 import LocalSearch from "@/components/shared/search/LocalSearch";
 import { getQuestionsByTagId } from "@/lib/actions/tag.action";
 import { URLProps } from "@/types";
+import { Metadata } from "next";
 import React from "react";
+export const metadata: Metadata = {
+  title: "Tag | DevFlood",
+  description:
+    "A platform for asking and answering programming questions. Get help, share knowledge, and collaborate with developers around the world. Explore topics in web development, mobile development, algorithms, data structure, and more.",
+};
 
 const page = async ({ params, searchParams }: URLProps) => {
   const result = await getQuestionsByTagId({

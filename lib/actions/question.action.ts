@@ -11,14 +11,16 @@ import {
   ToggleSaveQuestionParams,
   DeleteQuestionParams,
   EditQuestionParams,
+  RecommendedParams,
 } from "./shared.types";
 import User from "@/database/user.model";
 import Answer from "@/database/answer.model";
 import Interaction from "@/database/interaction.model";
 import { IGetQuestions, IQuestionWithAuthorTag } from "@/types";
 import { ObjectId } from "mongoose";
-// import { FilterQuery } from "mongoose";
+import { FilterQuery } from "mongoose";
 
+//TODO: setup recommandation system
 export const getQuestions = async ({
   page = 1,
   pageSize = 20,
@@ -93,7 +95,7 @@ export const createQuestion = async ({
       const newTag = await Tag.findOneAndUpdate(
         { name: { $regex: new RegExp(`^${tag}$`, "i") } },
         { $setOnInsert: { name: tag }, $push: { questions: question._id } },
-        { upsert: true, new: true }
+        { upsert: true, new: true },
       );
       documentTags.push(newTag._id);
     }
@@ -250,7 +252,7 @@ export const deleteQuestion = async ({
     await Interaction.deleteMany({ question: questionId });
     await Tag.updateMany(
       { question: questionId },
-      { $pull: { questions: questionId } }
+      { $pull: { questions: questionId } },
     );
     revalidatePath(path);
   } catch (error: any) {
@@ -290,3 +292,77 @@ export const getHotQuestions = async () => {
     throw error;
   }
 };
+// getRecommendedQuestions
+export async function getRecommendedQuestions({
+  userId,
+  page = 1,
+  pageSize = 20,
+  searchQuery,
+}: RecommendedParams) {
+  try {
+    await connectDB();
+
+    // find user
+    const user = await User.findOne({ clerkId: userId });
+
+    if (!user) {
+      throw new Error("user not found");
+    }
+
+    const skipAmount = (page - 1) * pageSize;
+
+    // Find the user's interactions
+    const userInteractions = await Interaction.find({ user: user._id })
+      .populate("tags")
+      .exec();
+
+    // Extract tags from user's interactions
+    const userTags = userInteractions.reduce((tags, interaction) => {
+      if (interaction.tags) {
+        tags = tags.concat(interaction.tags as any);
+      }
+      return tags;
+    }, []);
+    // Get distinct tag IDs from user's interactions
+    const distinctUserTagIds = [
+      // @ts-ignore
+      ...new Set(userTags.map((tag: any) => tag._id)),
+    ];
+    console.log({ userTags, userInteractions, distinctUserTagIds });
+
+    const query: FilterQuery<typeof Question> = {
+      $and: [
+        { tags: { $in: distinctUserTagIds } }, // Questions with user's tags
+        { author: { $ne: user._id } }, // Exclude user's own questions
+      ],
+    };
+
+    if (searchQuery) {
+      query.$or = [
+        { title: { $regex: searchQuery, $options: "i" } },
+        { content: { $regex: searchQuery, $options: "i" } },
+      ];
+    }
+
+    const totalQuestions = await Question.countDocuments(query);
+
+    const recommendedQuestions = (await Question.find(query)
+      .populate({
+        path: "tags",
+        model: Tag,
+      })
+      .populate({
+        path: "author",
+        model: User,
+      })
+      .skip(skipAmount)
+      .limit(pageSize)) as unknown as IQuestionWithAuthorTag[];
+
+    const isNext = totalQuestions > skipAmount + recommendedQuestions.length;
+
+    return { questions: recommendedQuestions, isNext };
+  } catch (error) {
+    console.error("Error getting recommended questions:", error);
+    throw error;
+  }
+}

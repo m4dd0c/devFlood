@@ -13,7 +13,7 @@ const AnswerTab = async ({ userId, clerkId, searchParams }: IAnswerTab) => {
   const result = await getUserAnswers({
     userId: JSON.parse(userId),
     page: searchParams.page ? +searchParams.page : 1,
-    pageSize: searchParams.pageSize ? +searchParams.pageSize : 10,
+    pageSize: searchParams.pageSize ? +searchParams.pageSize : 20,
   });
   return (
     <>

@@ -24,7 +24,7 @@ const AllAnswers = async ({
   const result = await getAnswers({
     page,
     sortBy: filter,
-    pageSize: 10,
+    pageSize: 20,
     questionId,
   });
   return (
@@ -63,7 +63,6 @@ const AllAnswers = async ({
                   </div>
                 </Link>
                 <div className="flex justify-end">
-                  {/* todo: */}
                   <Votes
                     type="Answer"
                     userId={userId}
