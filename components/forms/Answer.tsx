@@ -66,7 +66,7 @@ const Answer = ({ questionId, authorId }: IAnswer) => {
               <FormItem className="flex flex-col w-full gap-3">
                 <FormControl className="mt-3.5">
                   <Editor
-                    apiKey={process.env.NEXT_PUBLIC_TINY_EDITOR_API_SECRET}
+                    apiKey={process.env.TINY_EDITOR_API_SECRET}
                     onInit={(_evt, editor) => {
                       //@ts-ignore
                       editorRef.current = editor;
