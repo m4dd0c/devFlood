@@ -67,7 +67,6 @@ const page = async ({ params, searchParams }: URLProps) => {
               )}
 
               <ProfileLink
-                href={userInfo.user.createdAt.toString()}
                 imgUrl="/assets/icons/calendar.svg"
                 title={`Joined ${getJoinedDate(userInfo.user.createdAt)}`}
               />
