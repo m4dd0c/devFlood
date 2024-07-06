@@ -4,3 +4,6 @@
 2. ThemeContext.tsx (handleChangeMode function)
 3. Searching
 4. Recommandation (includes interaction and reputation w/ badging)
+ 
+# Issues After deployment
+1. Profile page not working...
