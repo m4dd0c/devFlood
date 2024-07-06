@@ -50,7 +50,7 @@ const GlobalResult = () => {
     }
   };
   return (
-    <div className="absolute top-full mt-3 z-10 w-full rounded-xl bg-light-800 py-5 shadow-sm">
+    <div className="absolute top-full mt-3 z-10 w-full rounded-xl bg-light-800 py-5 shadow-sm dark:bg-dark-400">
       <GlobalFilter />
       <div className="my-5 h-[1px] bg-light-700/50 dark:bg-dark-500/50" />
       <div className="space-y-5">
