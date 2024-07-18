@@ -21,17 +21,10 @@ const page = async () => {
     return redirect("/sign-in");
   }
   const user = await getUserById({ userId });
-  if (!user) {
-    toast({
-      title: "Login Required.",
-      description: "You must login first!",
-    });
-    return redirect("/sign-in");
-  }
   return (
     <div>
       <div>
-        <Question userId={JSON.stringify(user._id)} />
+        <Question userId={JSON.stringify(user?._id)} />
       </div>
     </div>
   );

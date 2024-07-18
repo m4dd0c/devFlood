@@ -15,6 +15,7 @@ import { AnswerSchema } from "@/lib/validations";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "../ui/button";
 import { createAnswer } from "@/lib/actions/answer.action";
+import { toast } from "../ui/use-toast";
 
 interface IAnswer {
   authorId: string;
@@ -31,6 +32,13 @@ const Answer = ({ questionId, authorId }: IAnswer) => {
     },
   });
   const onSubmit = async (val: z.infer<typeof AnswerSchema>) => {
+    if (!authorId) {
+      toast({
+        title: "Login required.",
+        description: "You must login first!",
+      });
+      return null;
+    }
     try {
       setIsSubmitting(true);
       await createAnswer({
@@ -66,7 +74,7 @@ const Answer = ({ questionId, authorId }: IAnswer) => {
               <FormItem className="flex flex-col w-full gap-3">
                 <FormControl className="mt-3.5">
                   <Editor
-                    apiKey={process.env.TINY_EDITOR_API_SECRET}
+                    apiKey={process.env.NEXT_PUBLIC_TINY_EDITOR_API_KEY}
                     onInit={(_evt, editor) => {
                       //@ts-ignore
                       editorRef.current = editor;

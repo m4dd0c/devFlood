@@ -49,6 +49,7 @@ const Question = ({ userId, type = "Create", questionDetails }: IQuestion) => {
     },
   });
 
+  console.log("tinyEditor", process.env.TINY_EDITOR_API_SECRET);
   async function onSubmit(values: z.infer<typeof QuestionSchema>) {
     setIsSubmitting(true);
     try {
@@ -85,7 +86,7 @@ const Question = ({ userId, type = "Create", questionDetails }: IQuestion) => {
 
   const handleKeyDown = (
     e: React.KeyboardEvent<HTMLInputElement>,
-    field: any
+    field: any,
   ) => {
     if (e.key === "Enter" && field.name === "tags") {
       e.preventDefault();
@@ -156,7 +157,7 @@ const Question = ({ userId, type = "Create", questionDetails }: IQuestion) => {
               </FormLabel>
               <FormControl className="mt-3.5">
                 <Editor
-                  apiKey={process.env.TINY_EDITOR_API_SECRET}
+                  apiKey={process.env.NEXT_PUBLIC_TINY_EDITOR_API_KEY}
                   onInit={(_evt, editor) => {
                     //@ts-ignore
                     editorRef.current = editor;

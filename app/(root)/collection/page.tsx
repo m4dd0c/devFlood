@@ -25,7 +25,7 @@ export default async function Collection({ searchParams }: SearchParamsProps) {
       title: "Login required.",
       description: "You must login first!",
     });
-    return redirect("/sign-in");
+    return null;
   }
   const result = await getSavedQuestions({
     clerkId: userId,

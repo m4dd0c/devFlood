@@ -26,13 +26,12 @@ const page = async ({
   searchParams: { pageSize?: string; page?: number; filter?: string };
 }) => {
   const { userId } = auth();
-  if (!userId) return null;
-
-  const user = await getUserById({ userId });
-  if (!user) return null;
+  let user;
+  if (userId) {
+    user = await getUserById({ userId });
+  }
 
   const result = await getQuestionById({ questionId: params.id });
-  if (!result) return null;
 
   return (
     <>
@@ -56,12 +55,12 @@ const page = async ({
           <div className="flex justify-end">
             <Votes
               type="Question"
-              userId={JSON.stringify(user._id)}
+              userId={JSON.stringify(user?._id)}
               itemId={JSON.stringify(result._id)}
               downvotes={result.downvotes.length}
-              hasDownvoted={result.downvotes.includes(user._id)}
+              hasDownvoted={user ? result.downvotes.includes(user._id) : false}
               upvotes={result.upvotes.length}
-              hasUpvoted={result.upvotes.includes(user._id)}
+              hasUpvoted={user ? result.upvotes.includes(user._id) : false}
               hasSaved={user?.saved.includes(result._id)}
             />
           </div>
@@ -109,12 +108,15 @@ const page = async ({
       <AllAnswers
         questionId={params.id}
         totalAnswers={result.answers.length}
-        userId={JSON.stringify(user._id)}
+        userId={JSON.stringify(user?._id)}
         page={searchParams?.page}
         filter={searchParams?.filter}
       />
+      {
+        
+      }
       <Answer
-        authorId={JSON.stringify(user._id)}
+        authorId={JSON.stringify(user?._id)}
         questionId={JSON.stringify(result._id)}
       />
     </>

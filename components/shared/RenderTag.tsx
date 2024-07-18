@@ -12,7 +12,7 @@ interface IProps {
 const RenderTag = ({ _id, name, numOfQuestions, showCount }: IProps) => {
   const router = useRouter();
   const handleClick = () => {
-    router.push(`/tags/${_id}`);
+    router.push(`/tags/${JSON.parse(_id)}`);
   };
   return (
     <div

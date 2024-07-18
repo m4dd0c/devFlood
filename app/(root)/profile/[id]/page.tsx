@@ -12,8 +12,6 @@ import { getJoinedDate } from "@/lib/utils";
 import Stats from "@/components/shared/Stats";
 import QuestionTab from "@/components/shared/QuestionTab";
 import AnswerTab from "@/components/shared/AnswerTab";
-import { redirect } from "next/navigation";
-import { toast } from "@/components/ui/use-toast";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -24,14 +22,6 @@ export const metadata: Metadata = {
 const page = async ({ params, searchParams }: URLProps) => {
   const userInfo = await getUserInfo({ userId: params.id });
   const { userId } = auth();
-  if (!userId) {
-    toast({
-      title: "Login required.",
-      description: "You must login first.",
-    });
-    return redirect("/sign-in");
-  }
-
   return (
     <>
       <div className="flex flex-col-reverse items-start justify-between sm:flex-row">
