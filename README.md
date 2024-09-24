@@ -8,9 +8,9 @@
 - [Technologies Used](#technologies-used)
 
 ## Preview 
-[home](./images/home.png)
+![home](./images/home.png)
 <br/>
-[question](./images/question.png)
+![question](./images/question.png)
 <br/>
 
 ## Overview
@@ -20,7 +20,7 @@
 - Implemented Local as well as Global Searching functionality.
 - Includes Custom Recommandation System along w/ different Category sorting.
 - Facilitating power of Clerk authentication system with Webhook support for mongodb.
-- [live](https://dev-flood.vercel.app/)
+- [Visit devFlood](https://dev-flood.vercel.app/)
 
 ## Installation
 
