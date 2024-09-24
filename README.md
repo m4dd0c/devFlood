@@ -8,9 +8,9 @@
 - [Technologies Used](#technologies-used)
 
 ## Preview 
-[home](/images/home.png)
+[home](./images/home.png)
 <br/>
-[question](/images/question.png)
+[question](./images/question.png)
 <br/>
 
 ## Overview
