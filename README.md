@@ -1,9 +1,17 @@
 ﻿## Table of Contents
 
+
+- [Table of Contents](#table-of-contents)
+- [Preview](#preview)
 - [Overview](#overview)
 - [Installation](#installation)
-- [Usage](#usage)
 - [Technologies Used](#technologies-used)
+
+## Preview 
+[home](/images/home.png)
+<br/>
+[question](/images/question.png)
+<br/>
 
 ## Overview
 
