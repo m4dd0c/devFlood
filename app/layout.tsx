@@ -30,6 +30,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <meta name="google-site-verification" content="Gsqr_jezeJbZ4YA1NUt3SX926vmThBpNpLs0IDmF8Dg" />
+     </head>
       <body className={`${spaceGrotesk.variable} ${inter.variable}`}>
         <ClerkProvider>
           <ThemeProvider>{children}</ThemeProvider>
